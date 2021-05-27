@@ -12,5 +12,10 @@ namespace ScoreStore.Models
         public List<uint> GameList { get; }
         public List<uint> FriendList { get; }
         public List<uint> StreakList { get; }
+
+        public PlayerModel()
+        {
+
+        }
     }
 }
