@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ScoreStore.Models
 {
-    public class PlayerModel
+    public class Player
     {
         public uint Id { get; set; }
         public string Name { get; set; }
@@ -13,7 +13,7 @@ namespace ScoreStore.Models
         public List<uint> FriendList { get; }
         public List<uint> StreakList { get; }
 
-        public PlayerModel()
+        public Player()
         {
 
         }

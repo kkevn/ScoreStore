@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ScoreStore.Models;
 
 namespace ScoreStore.Data
 {
@@ -12,5 +13,7 @@ namespace ScoreStore.Data
             : base(options)
         {
         }
+        public DbSet<ScoreStore.Models.Player> PlayerModel { get; set; }
+        public DbSet<ScoreStore.Models.Game> Game { get; set; }
     }
 }
