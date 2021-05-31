@@ -10,25 +10,25 @@
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
+    <!--<thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.ImageURL)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
             <th></th>
         </tr>
-    </thead>
+    </thead>-->
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
+                <img src="@Html.DisplayFor(modelItem => item.ImageURL)" alt="@Html.DisplayFor(modelItem => item.Title) Cover" width="120" height="96">
             </td>
             <td>
-                <img src="@Html.DisplayFor(modelItem => item.ImageURL)" alt="Game Cover" width="120" height="96">
+                @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
