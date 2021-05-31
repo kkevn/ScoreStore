@@ -10,7 +10,8 @@ namespace ScoreStore.Data.Migrations
                 name: "Game",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true),
                     ImageURL = table.Column<string>(nullable: true)
                 },
@@ -23,7 +24,8 @@ namespace ScoreStore.Data.Migrations
                 name: "PlayerModel",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
                     GameList = table.Column<string>(nullable: true),
                     FriendList = table.Column<string>(nullable: true),

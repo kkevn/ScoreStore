@@ -10,7 +10,7 @@ using ScoreStore.Data;
 namespace ScoreStore.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210531043937_initialsetup")]
+    [Migration("20210531052259_initialsetup")]
     partial class initialsetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -223,9 +223,10 @@ namespace ScoreStore.Data.Migrations
 
             modelBuilder.Entity("ScoreStore.Models.Game", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ImageURL")
                         .HasColumnType("nvarchar(max)");
@@ -240,9 +241,10 @@ namespace ScoreStore.Data.Migrations
 
             modelBuilder.Entity("ScoreStore.Models.Player", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FriendList")
                         .HasColumnType("nvarchar(max)");
