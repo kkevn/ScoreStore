@@ -9,9 +9,12 @@ namespace ScoreStore.Models
     {
         public uint Id { get; set; }
         public string Name { get; set; }
-        public List<uint> GameList { get; }
-        public List<uint> FriendList { get; }
-        public List<uint> StreakList { get; }
+        //public List<uint> GameList { get; }
+        public string GameList { get; set; }
+        //public List<uint> FriendList { get; }
+        public string FriendList { get; set; }
+        //public List<uint> StreakList { get; }
+        public string StreakList { get; set; }
 
         public Player()
         {
