@@ -26,7 +26,7 @@ namespace ScoreStore.Controllers
         }
 
         // GET: Player/Details/5
-        public async Task<IActionResult> Details(uint? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -66,7 +66,7 @@ namespace ScoreStore.Controllers
         }
 
         // GET: Player/Edit/5
-        public async Task<IActionResult> Edit(uint? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -86,7 +86,7 @@ namespace ScoreStore.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(uint id, [Bind("Id,Name")] Player playerModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Player playerModel)
         {
             if (id != playerModel.Id)
             {
@@ -117,7 +117,7 @@ namespace ScoreStore.Controllers
         }
 
         // GET: Player/Delete/5
-        public async Task<IActionResult> Delete(uint? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -137,7 +137,7 @@ namespace ScoreStore.Controllers
         // POST: Player/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(uint id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var playerModel = await _context.PlayerModel.FindAsync(id);
             _context.PlayerModel.Remove(playerModel);
@@ -145,7 +145,7 @@ namespace ScoreStore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PlayerModelExists(uint id)
+        private bool PlayerModelExists(int id)
         {
             return _context.PlayerModel.Any(e => e.Id == id);
         }

@@ -7,7 +7,7 @@ namespace ScoreStore.Models
 {
     public class Player
     {
-        public uint Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         //public List<uint> GameList { get; }
         public string GameList { get; set; }

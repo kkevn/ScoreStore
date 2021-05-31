@@ -26,7 +26,7 @@ namespace ScoreStore.Controllers
         }
 
         // GET: Games/Details/5
-        public async Task<IActionResult> Details(uint? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -66,7 +66,7 @@ namespace ScoreStore.Controllers
         }
 
         // GET: Games/Edit/5
-        public async Task<IActionResult> Edit(uint? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -86,7 +86,7 @@ namespace ScoreStore.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(uint id, [Bind("Id,Title,ImageURL")] Game game)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ImageURL")] Game game)
         {
             if (id != game.Id)
             {
@@ -117,7 +117,7 @@ namespace ScoreStore.Controllers
         }
 
         // GET: Games/Delete/5
-        public async Task<IActionResult> Delete(uint? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -137,7 +137,7 @@ namespace ScoreStore.Controllers
         // POST: Games/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(uint id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var game = await _context.Game.FindAsync(id);
             _context.Game.Remove(game);
@@ -145,7 +145,7 @@ namespace ScoreStore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GameExists(uint id)
+        private bool GameExists(int id)
         {
             return _context.Game.Any(e => e.Id == id);
         }
