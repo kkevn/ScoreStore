@@ -10,11 +10,11 @@ using ScoreStore.Models;
 
 namespace ScoreStore.Controllers
 {
-    public class PlayerController : Controller
+    public class PlayersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public PlayerController(ApplicationDbContext context)
+        public PlayersController(ApplicationDbContext context)
         {
             _context = context;
         }
