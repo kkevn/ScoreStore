@@ -1,3 +1,9 @@
+:exclamation: :exclamation: :exclamation:
+
+**Development will resume within a week; some personal responsibilities have taken up most of my time this month - apologies for the inactivity.**
+
+:exclamation: :exclamation: :exclamation:
+
 # ScoreStore
  ASP.NET web application using MVC to track and store wins/losses for any kind of game.
  
@@ -13,7 +19,7 @@ Once a game is added, the user will then need to manually update their game hist
 
 ---
 
-### Planned Features
+###  :construction:Planned Features
 
 * Custom game submission
   * [x] support for game cover art images
@@ -25,7 +31,7 @@ Once a game is added, the user will then need to manually update their game hist
 * Friends list to compare scores with
   * [ ] ability to add friends
 
-*This project is in early stages and a work in progress*
+:warning: *This project is in early stages and a work in progress* :warning:
 
 ---
 
