@@ -12,6 +12,8 @@
     <Compile Remove="Data\Migrations\20210531043443_initialsetup.Designer.cs" />
     <Compile Remove="Data\Migrations\20210531043937_initialsetup.cs" />
     <Compile Remove="Data\Migrations\20210531043937_initialsetup.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210626212958_ExtendIdentityUser.cs" />
+    <Compile Remove="Data\Migrations\20210626212958_ExtendIdentityUser.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
