@@ -1,8 +1,4 @@
-:exclamation: :exclamation: :exclamation:
-
-**Development will resume within a week; some personal responsibilities have taken up most of my time this month - apologies for the inactivity.**
-
-:exclamation: :exclamation: :exclamation:
+:construction: **This project is still in early development stages.** :construction:
 
 # ScoreStore
  ASP.NET web application using MVC to track and store wins/losses for any kind of game.
@@ -19,19 +15,20 @@ Once a game is added, the user will then need to manually update their game hist
 
 ---
 
-###  :construction:Planned Features
+### Features
 
-* Custom game submission
-  * [x] support for game cover art images
-* Score tracking to graphically display a user's:
-  * [ ] win/loss ratio
-  * [ ] play counter per game
-  * [ ] total wins per game
-  * [ ] recent win/loss history
-* Friends list to compare scores with
-  * [ ] ability to add friends
+Please see the [issue tracker](https://github.com/kkevn/ScoreStore/issues) for a more detailed list of planned features and their status.
 
-:warning: *This project is in early stages and a work in progress* :warning:
+* Add any game(s) you'd like to the database
+* Update your account's game wins as they occur
+* Graphically view your stats such as:
+  * win/loss ratio
+  * play count per game
+  * total wins per game
+  * recent win/loss history
+* Compare stats with added friends
+
+:warning: *This project is in early stages and a work in progress; as a result features may be subject to change* :warning:
 
 ---
 
