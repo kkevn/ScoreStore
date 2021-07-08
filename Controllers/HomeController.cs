@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ScoreStore.Models;
 using System;
@@ -12,10 +13,12 @@ namespace ScoreStore.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -26,6 +29,24 @@ namespace ScoreStore.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public IActionResult UserInfo()
+        {
+            // obtain reference to currently logged in user by Id
+            var userId = _userManager.GetUserId(HttpContext.User);
+
+            // redirect user to log in if not already signed in
+            if (userId == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+            else
+            {
+                // obtain the user with Id and pass to the view
+                ApplicationUser currentUser = _userManager.FindByIdAsync(userId).Result;
+                return View(currentUser);
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
