@@ -31,10 +31,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
-                <a asp-action="AddFriend" asp-route-id="@item.Id">Add Friend</a>
-            </td>
-        </tr>
+            @if (!User.Identity.Name.ToUpper().Equals(item.NormalizedEmail))
+            {
+                <td>
+                    <a asp-action="AddFriend" asp-route-id="@item.Id">Add Friend</a>
+                </td>
+            }
+            </tr>
 }
     </tbody>
 </table>
