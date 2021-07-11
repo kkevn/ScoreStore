@@ -49,6 +49,21 @@ namespace ScoreStore.Controllers
             }
         }
 
+        public IActionResult SearchUsers()
+        {
+            return View();
+        }
+
+        public IActionResult SearchUsersResults(String SearchInput)
+        {
+
+            // obtain list of all users in database
+            var users = _userManager.Users;
+
+            // return subset of users with email or account name that contains the search input parameter
+            return View(users.Where(u => u.Name.Contains(SearchInput) || u.NormalizedEmail.Contains(SearchInput)));
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

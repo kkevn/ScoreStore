@@ -1,0 +1,40 @@
+﻿@model IEnumerable<ScoreStore.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "SearchUsersResults";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>SearchUsers</h1>
+
+<p>
+    <a asp-action="SearchUsers">Search Again</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NormalizedEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NormalizedEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a asp-action="AddFriend" asp-route-id="@item.Id">Add Friend</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
