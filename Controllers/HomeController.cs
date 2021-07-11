@@ -51,7 +51,15 @@ namespace ScoreStore.Controllers
 
         public IActionResult SearchUsers()
         {
-            return View();
+            // redirect user to log in if not already signed in
+            if (_userManager.GetUserId(HttpContext.User) == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public IActionResult SearchUsersResults(String SearchInput)
