@@ -34,7 +34,7 @@
             @if (!User.Identity.Name.ToUpper().Equals(item.NormalizedEmail))
             {
                 <td>
-                    <a asp-action="AddFriend" asp-route-id="@item.Id">Add Friend</a>
+                    <a asp-action="FriendList" asp-route-id="@item.Id">Add Friend</a>
                 </td>
             }
             </tr>

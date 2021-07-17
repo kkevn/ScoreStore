@@ -72,6 +72,62 @@ namespace ScoreStore.Controllers
             return View(users.Where(u => u.Name.Contains(SearchInput) || u.NormalizedEmail.Contains(SearchInput)));
         }
 
+        public IActionResult ShowFriendList()
+        {
+
+            // obtain reference to currently logged in user by Id
+            var userId = _userManager.GetUserId(HttpContext.User);
+
+            // obtain the user with Id
+            var currentUser = _userManager.FindByIdAsync(userId).Result;
+
+            // obtain list of all users in database
+            var users = _userManager.Users;
+
+            // return subset of users with Id contained in friend list parameter
+            return View(users.Where(u => currentUser.FriendList.Contains(u.Id)));
+        }
+
+        public async Task<IActionResult> FriendList()
+        {
+            // obtain the friend Id to add from the route data
+            var friendId = Url.ActionContext.RouteData.Values["id"];
+            
+            // obtain reference to currently logged in user by Id
+            var userId = _userManager.GetUserId(HttpContext.User);
+            
+            // redirect user to log in if not already signed in
+            if (userId == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+            else
+            {
+                // obtain the user with Id
+                var currentUser = await _userManager.FindByIdAsync(userId);
+
+                // append selected friend Id with a delimiter to user's friend list
+                string delimiter = ",";
+                if (currentUser.FriendList != null)
+                    currentUser.FriendList += (friendId + delimiter);
+                else
+                    currentUser.FriendList = friendId + delimiter;
+                
+                // update user on database
+                await _userManager.UpdateAsync(currentUser);
+
+                // logging message for debugging purposes
+                System.Diagnostics.Debug.WriteLine("\t==> Current user {" + userId + "} added user {" + friendId + "} as a friend");
+
+                // obtain list of all users in database
+                var users = _userManager.Users;
+                
+                // return subset of users with Id contained in friend list parameter
+                return View(users.Where(u => currentUser.FriendList.Contains(u.Id)));
+                //return View("ShowFriendList");
+            }
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
