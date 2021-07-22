@@ -64,7 +64,6 @@ namespace ScoreStore.Controllers
 
         public IActionResult SearchUsersResults(String SearchInput)
         {
-
             // obtain list of all users in database
             var users = _userManager.Users;
 
@@ -72,30 +71,37 @@ namespace ScoreStore.Controllers
             return View(users.Where(u => u.Name.Contains(SearchInput) || u.NormalizedEmail.Contains(SearchInput)));
         }
 
-        public IActionResult ShowFriendList()
+        public IActionResult FriendList()
         {
-
             // obtain reference to currently logged in user by Id
             var userId = _userManager.GetUserId(HttpContext.User);
 
-            // obtain the user with Id
-            var currentUser = _userManager.FindByIdAsync(userId).Result;
+            // redirect user to log in if not already signed in
+            if (userId == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+            else
+            {
+                // obtain the user with Id
+                var currentUser = _userManager.FindByIdAsync(userId).Result;
 
-            // obtain list of all users in database
-            var users = _userManager.Users;
+                // obtain list of all users in database
+                var users = _userManager.Users;
 
-            // return subset of users with Id contained in friend list parameter
-            return View(users.Where(u => currentUser.FriendList.Contains(u.Id)));
+                // return subset of users with Id contained in friend list of current user
+                return View(users.Where(u => currentUser.FriendList.Contains(u.Id)));
+            }
         }
 
-        public async Task<IActionResult> FriendList()
+        public async Task<IActionResult> AddFriend()
         {
             // obtain the friend Id to add from the route data
             var friendId = Url.ActionContext.RouteData.Values["id"];
-            
+
             // obtain reference to currently logged in user by Id
             var userId = _userManager.GetUserId(HttpContext.User);
-            
+
             // redirect user to log in if not already signed in
             if (userId == null)
             {
@@ -112,7 +118,7 @@ namespace ScoreStore.Controllers
                     currentUser.FriendList += (friendId + delimiter);
                 else
                     currentUser.FriendList = friendId + delimiter;
-                
+
                 // update user on database
                 await _userManager.UpdateAsync(currentUser);
 
@@ -121,10 +127,9 @@ namespace ScoreStore.Controllers
 
                 // obtain list of all users in database
                 var users = _userManager.Users;
-                
-                // return subset of users with Id contained in friend list parameter
-                return View(users.Where(u => currentUser.FriendList.Contains(u.Id)));
-                //return View("ShowFriendList");
+
+                // return FriendList view with model of subset of users with Id contained in friend list of current user
+                return View("FriendList", users.Where(u => currentUser.FriendList.Contains(u.Id)));
             }
         }
 
