@@ -156,6 +156,40 @@ namespace ScoreStore.Controllers
             }
         }
 
+        public async Task<IActionResult> RemoveFriend(String Id)
+        {
+            // obtain reference to currently logged in user by Id
+            var userId = _userManager.GetUserId(HttpContext.User);
+
+            // redirect user to log in if not already signed in
+            if (userId == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+            else
+            {
+                // obtain the user with Id
+                var currentUser = await _userManager.FindByIdAsync(userId);
+
+                // remove selected friend Id with a delimiter from user's friend list
+                string delimiter = ",";
+                if (currentUser.FriendList.Contains(Id))
+                    currentUser.FriendList = currentUser.FriendList.Replace(Id + delimiter, "");
+
+                // update user on database
+                await _userManager.UpdateAsync(currentUser);
+
+                // logging message for debugging purposes
+                System.Diagnostics.Debug.WriteLine("\t==> Current user {" + userId + "} removed user {" + Id + "} as a friend");
+
+                // obtain list of all users in database
+                var users = _userManager.Users;
+
+                // return FriendList view with model of subset of users with Id contained in friend list of current user
+                return View("FriendList", users.Where(u => currentUser.FriendList.Contains(u.Id)));
+            }
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
