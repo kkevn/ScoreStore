@@ -64,11 +64,34 @@ namespace ScoreStore.Controllers
 
         public IActionResult SearchUsersResults(String SearchInput)
         {
-            // obtain list of all users in database
-            var users = _userManager.Users;
+            // obtain reference to currently logged in user by Id
+            var userId = _userManager.GetUserId(HttpContext.User);
 
-            // return subset of users with email or account name that contains the search input parameter
-            return View(users.Where(u => u.Name.Contains(SearchInput) || u.NormalizedEmail.Contains(SearchInput)));
+            // redirect user to log in if not already signed in
+            if (userId == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+            else
+            {
+                // obtain the user with Id
+                var currentUser = _userManager.FindByIdAsync(userId).Result;
+
+                // obtain list of all users in database
+                var users = _userManager.Users;
+
+                // filter list of users matching search input phrase
+                users = users.Where(u => u.Name.Contains(SearchInput) || u.NormalizedEmail.Contains(SearchInput));
+
+                // filter list of users not already in current user's friend list
+                users = users.Where(u => !currentUser.FriendList.Contains(u.Id));
+
+                // filter list of users no not include current user
+                users = users.Where(u => !currentUser.Id.Equals(u.Id));
+
+                // return subset of users with the above filters
+                return View(users);
+            }
         }
 
         public IActionResult FriendList()
