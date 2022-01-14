@@ -14,5 +14,6 @@ namespace ScoreStore.Data
         {
         }
         public DbSet<ScoreStore.Models.Game> Game { get; set; }
+        public DbSet<ScoreStore.Models.Scores> Scores { get; set; }
     }
 }
