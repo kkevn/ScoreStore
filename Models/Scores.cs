@@ -25,5 +25,12 @@ namespace ScoreStore.Models
         {
             Wins = Losses = 0;
         }
+
+        public Scores(String userId, int gameId)
+        {
+            UserId = userId;
+            GameId = gameId;
+            Wins = Losses = 0;
+        }
     }
 }

@@ -240,18 +240,46 @@ namespace ScoreStore.Controllers
 
                 // append selected game Id with curly braces to user's game list if it doesn't exist
                 string gameToAdd = "{" + gameId + "}";
-                if (currentUser.GameList != null) {
+                bool gameAdded = false;
+                if (currentUser.GameList != null)
+                {
                     if (!currentUser.GameList.Contains(gameToAdd))
+                    {
                         currentUser.GameList += gameToAdd;
-                }
-                else
+                        gameAdded = true;
+                    }
+                } else {
                     currentUser.GameList = gameToAdd;
+                    gameAdded = true;
+                }
 
-                // update user on database
-                await _userManager.UpdateAsync(currentUser);
+                // add a score entry for this user and game
+                if (gameAdded)
+                {
+                    // parse obtained game Id into integer
+                    int gameIdVal = Int32.Parse(gameId.ToString());
 
-                // logging message for debugging purposes
-                System.Diagnostics.Debug.WriteLine("\t==> Current user {" + userId + "} added game {" + gameId + "} to user's game list");
+                    // obtain list of all scores in database
+                    var scores = _context.Scores;
+                    
+                    // add new score entry if one does not exist for this user and game combination
+                    if (scores.Where(s => s.UserId.Equals(userId) && s.GameId == gameIdVal).FirstOrDefault() == null)
+                    {
+                        scores.Add(new Scores(userId, gameIdVal));
+                        await _context.SaveChangesAsync();
+                    }
+
+                    // update user on database
+                    await _userManager.UpdateAsync(currentUser);
+
+                    // logging message for debugging purposes
+                    System.Diagnostics.Debug.WriteLine("\t==> Current user {" + userId + "} added game {" + gameId + "} to user's game list");
+                } else {
+                    // logging message for debugging purposes
+                    System.Diagnostics.Debug.WriteLine("\t==> Current user {" + userId + "} already had game {" + gameId + "} added to user's game list");
+
+                    // TODO: notify user game already existed in their game list
+                }
 
                 // obtain list of all games in database
                 var games = _context.Game;
