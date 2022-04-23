@@ -36,8 +36,8 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <!--<a onClick="ConfirmGame('@item.Title')" asp-controller="Home" asp-action="AddGame" asp-route-id="@item.Id">Add Game</a>-->
-                    <button onClick="ConfirmGame('@item.Title', '@item.Id')">Add Game</button>
+                    <!--<a asp-controller="Home" asp-action="AddGame" asp-route-id="@item.Id">Add Game</a>-->
+                    <button onClick="ConfirmGameAddition('@item.Title', '@item.Id')">Add Game</button>
                 }
             </td>
         </tr>
@@ -50,7 +50,7 @@
      * Prompts a dialog to the user for confirming addition of the specified game
      * to their game list.
      */
-    function ConfirmGame(title, id) {
+    function ConfirmGameAddition(title, id) {
 
         // dialog message to display
         let msg = "Are you sure you want to add '" + title + "' to your game list?";
