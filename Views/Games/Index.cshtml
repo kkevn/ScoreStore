@@ -36,10 +36,30 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a asp-controller="Home" asp-action="AddGame" asp-route-id="@item.Id">Add Game</a>
+                    <!--<a onClick="ConfirmGame('@item.Title')" asp-controller="Home" asp-action="AddGame" asp-route-id="@item.Id">Add Game</a>-->
+                    <button onClick="ConfirmGame('@item.Title', '@item.Id')">Add Game</button>
                 }
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<script type="text/javascript">
+    /**
+     * Prompts a dialog to the user for confirming addition of the specified game
+     * to their game list.
+     */
+    function ConfirmGame(title, id) {
+
+        // dialog message to display
+        let msg = "Are you sure you want to add '" + title + "' to your game list?";
+
+        // prompt dialog to confirm addition of specified game
+        if (confirm(msg) == true) {
+
+            // call asp action from controller to add specified game
+            window.location.href = '@Url.Action("AddGame", "Home")/' + id;
+        }
+    }
+</script>
