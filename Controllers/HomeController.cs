@@ -322,6 +322,37 @@ namespace ScoreStore.Controllers
             }
         }
 
+        public IActionResult ViewGame(String Id)
+        {
+            // obtain reference to currently logged in user by Id
+            var userId = _userManager.GetUserId(HttpContext.User);
+
+            // parse obtained game Id into integer
+            int gameIdVal = Int32.Parse(Id.ToString());
+
+            // redirect user to log in if not already signed in
+            if (userId == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+            else
+            {
+                // obtain list of all scores in database
+                var scores = _context.Scores;
+
+                // obtain score entry for this user and game combination
+                var score = scores.Where(s => s.UserId.Equals(userId) && s.GameId == gameIdVal).FirstOrDefault();
+
+                // store game title and cover art URL in a viewbag
+                var game = _context.Game.Where(g => g.Id == gameIdVal).FirstOrDefault();
+                ViewBag.Title = game.Title;
+                ViewBag.ImageURL = game.ImageURL;
+
+                // return score entry
+                return View(score);
+            }
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
