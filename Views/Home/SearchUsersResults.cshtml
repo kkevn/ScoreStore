@@ -37,11 +37,31 @@
             </td>
             @if (!User.Identity.Name.ToUpper().Equals(item.NormalizedEmail))
             {
-                <td>
-                    <a asp-action="AddFriend" asp-route-id="@item.Id">Add Friend</a>
-                </td>
+        <td>
+            <!--<a asp-action="AddFriend" asp-route-id="@item.Id">Add Friend</a>-->
+            <button onClick="ConfirmFriendAddition('@item.Name', '@item.Id')">Add Friend</button>
+        </td>
             }
         </tr>
 }
     </tbody>
 </table>
+
+<script type="text/javascript">
+    /**
+     * Prompts a dialog to the user for confirming addition of the specified friend
+     * to their friend list.
+     */
+    function ConfirmFriendAddition(friend, id) {
+
+        // dialog message to display
+        let msg = "Are you sure you want to add '" + friend + "' to your friend list?";
+
+        // prompt dialog to confirm addition of specified friend
+        if (confirm(msg) == true) {
+
+            // call asp action from controller to add specified game
+            window.location.href = '@Url.Action("AddFriend", "Home")/' + id;
+        }
+    }
+</script>
