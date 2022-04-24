@@ -31,9 +31,29 @@
                 @Html.DisplayFor(modelItem => item.NormalizedEmail)
             </td>
             <td>
-                <a asp-action="RemoveFriend" asp-route-id="@item.Id">Remove</a>
+                <!--<a asp-action="RemoveFriend" asp-route-id="@item.Id">Remove</a>-->
+                <button onClick="ConfirmFriendRemoval('@item.Name', '@item.Id')">Remove</button>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<script type="text/javascript">
+    /**
+     * Prompts a dialog to the user for confirming removal of the specified friend
+     * from their friend list.
+     */
+    function ConfirmFriendRemoval(friend, id) {
+
+        // dialog message to display
+        let msg = "Are you sure you want to remove '" + friend + "' from your friend list?";
+
+        // prompt dialog to confirm removal of specified friend
+        if (confirm(msg) == true) {
+
+            // call asp action from controller to remove specified friend (and clear ambient routing value)
+            window.location.href = '@Url.Action("RemoveFriend", "Home", new { id = "" })/' + id;
+        }
+    }
+</script>
