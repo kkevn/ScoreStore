@@ -30,9 +30,30 @@
             <td>
                 <!--<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |-->
                 <a asp-action="ViewGame" asp-route-id="@item.Id">View</a> |
-                <a asp-action="RemoveGame" asp-route-id="@item.Id">Remove</a>
+                <!--<a asp-action="RemoveGame" asp-route-id="@item.Id">Remove</a>-->
+                <button onClick="ConfirmGameRemoval('@item.Title', '@item.Id')">Remove</button>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<script type="text/javascript">
+    /**
+     * Prompts a dialog to the user for confirming removal of the specified game
+     * from their game list.
+     */
+    function ConfirmGameRemoval(title, id) {
+
+        // dialog message to display
+        let msg = "Are you sure you want to remove '" + title + "' from your game list?";
+        let note = "Scores for this game will not be deleted should you choose to add it back later.";
+
+        // prompt dialog to confirm removal of specified game
+        if (confirm(msg + "\n\n" + note) == true) {
+
+            // call asp action from controller to remove specified game (and clear ambient routing value)
+            window.location.href = '@Url.Action("RemoveGame", "Home", new { id = "" })/' + id;
+        }
+    }
+</script>
