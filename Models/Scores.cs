@@ -12,6 +12,7 @@ namespace ScoreStore.Models
         public int Id { get; set; }
         public int Wins { get; set; }
         public int Losses { get; set; }
+        public string StreakList { get; set; }
 
         public string UserId { get; set; }
         [ForeignKey("UserId")]
