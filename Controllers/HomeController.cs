@@ -417,13 +417,17 @@ namespace ScoreStore.Controllers
                     winningId = Id; // update ID of winning user (will be {x} if 'Other' was selected)
                 }
 
-                // TODO: add winningId to Score model streak list
+                // append Id of winning user with a delimiter to this score's streak list
+                string delimiter = ",";
+                if (score.StreakList != null)
+                    score.StreakList += (winningId + delimiter);
+                else
+                    score.StreakList = winningId + delimiter;
 
                 // update score on database
                 await _context.SaveChangesAsync();
 
                 // append Id of winning user with a delimiter to this user's streak list
-                string delimiter = ",";
                 if (currentUser.StreakList != null)
                     currentUser.StreakList += (winningId + delimiter);
                 else
