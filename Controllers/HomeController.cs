@@ -353,6 +353,93 @@ namespace ScoreStore.Controllers
             }
         }
 
+        public IActionResult AddScore(String Id)
+        {
+            // obtain reference to currently logged in user by Id
+            var userId = _userManager.GetUserId(HttpContext.User);
+
+            // parse obtained game Id into integer
+            int gameIdVal = Int32.Parse(Id.ToString());
+
+            // redirect user to log in if not already signed in
+            if (userId == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+            else
+            {
+                // store game Id, title and cover art URL of current game in a viewbag
+                var game = _context.Game.Where(g => g.Id == gameIdVal).FirstOrDefault();
+                ViewBag.GameId = game.Id;
+                ViewBag.Title = game.Title;
+                //ViewBag.ImageURL = game.ImageURL;
+
+                // obtain the user with Id
+                var currentUser = _userManager.FindByIdAsync(userId).Result;
+
+                // obtain list of all users in database
+                var users = _userManager.Users;
+
+                // return subset of users with Id contained in friend list of current user
+                return View(users.Where(u => currentUser.FriendList.Contains(u.Id)));
+            }
+        }
+
+        public async Task<IActionResult> SubmitScore(int Game, String Id)
+        {
+            // obtain reference to currently logged in user by Id
+            var userId = _userManager.GetUserId(HttpContext.User);
+
+            // redirect user to log in if not already signed in
+            if (userId == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+            else
+            {
+                // obtain the user with Id
+                var currentUser = await _userManager.FindByIdAsync(userId);
+
+                // obtain list of all scores in database
+                var scores = _context.Scores;
+
+                // obtain score entry for this user and game combination
+                var score = scores.Where(s => s.UserId.Equals(userId) && s.GameId == Game).FirstOrDefault();
+
+                // mark current user ID as default winner
+                string winningId = userId;
+
+                // increment Wins counter if current user won, otherwise add loss
+                if (Id.Equals("{0}")) {
+                    score.Wins++;
+                } else {
+                    score.Losses++;
+                    winningId = Id; // update ID of winning user (will be {x} if 'Other' was selected)
+                }
+
+                // TODO: add winningId to Score model streak list
+
+                // update score on database
+                await _context.SaveChangesAsync();
+
+                // append Id of winning user with a delimiter to this user's streak list
+                string delimiter = ",";
+                if (currentUser.StreakList != null)
+                    currentUser.StreakList += (winningId + delimiter);
+                else
+                    currentUser.StreakList = winningId + delimiter;
+
+                // update user on database
+                await _userManager.UpdateAsync(currentUser);
+
+                // logging message for debugging purposes
+                System.Diagnostics.Debug.WriteLine("\t==> Current user {" + userId + "} added score for game {" + Game + "} with winner {" + winningId + "}");
+
+                // return ViewGame view with game Id of score being submitted for
+                return RedirectToAction("ViewGame", new { Id = Game });
+            }
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
