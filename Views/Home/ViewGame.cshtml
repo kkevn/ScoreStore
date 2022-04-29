@@ -37,8 +37,111 @@
         </dd>
     </dl>
 </div>
+
+<div class="grid-container">
+    <div class="grid-item" id="donut_single"></div>
+    <div class="grid-item" id="column_chart"></div>
+    <div class="grid-item">3</div>
+    <div class="grid-item">4</div>
+</div>
+
 <div>
     <!--<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |-->
     <a asp-action="AddScore" asp-route-id="@Model.GameId">Add Score</a> |
     <a asp-action="GameList">Back to List</a>
 </div>
+
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto auto;
+        background-color: #2196F3;
+        padding: 10px;
+    }
+
+    .grid-item {
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        font-size: 30px;
+        text-align: center;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+    // load charts and package
+    google.charts.load('current', { 'packages': ['corechart'] });
+
+    // draw win/loss donut chart
+    google.charts.setOnLoadCallback(drawWinRatioChart);
+
+    // draw friend count column chart
+    google.charts.setOnLoadCallback(drawColumnChart);
+
+    // render the win loss ratio chart
+      function drawWinRatioChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Result', 'Count'],
+          ['Wins',     @Model.Wins],
+          ['Losses',     @Model.Losses],
+        ]);
+
+        var options = {
+          pieHole: 0.5,
+          pieSliceTextStyle: {
+            color: 'black',
+          },
+            legend: 'none',
+            width: 400,
+            height: 300,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donut_single'));
+        chart.draw(data, options);
+    }
+
+    // render the column chart
+    function drawColumnChart() {
+
+        var data = new google.visualization.DataTable();
+            data.addColumn('string', 'User');
+        data.addColumn('number', 'Wins');
+
+        
+        var test = "@ViewData["columns"]";
+
+        // { UserId = ..., Wins = ... }_{UserId = ..., Wins = ...}
+
+        test.split('_').forEach(function (s) {
+
+            var x = s.replace("{ UserId = ", "");
+            x = x.replace(" Wins = ", "");
+            x = x.replace(" }", "");
+            
+            var i_ = x.indexOf(',');
+            var id = x.substring(0, i_);
+            var val = x.substring(i_ + 1, x.length);
+            
+            data.addRow([id, parseInt(val)]);
+        });
+
+        // set options for this chart
+        var options = {
+            title: 'Wins compared to Friends',
+            width: 400,
+            height: 300,
+            vAxis: {
+                format: '#'
+            }
+        };
+
+        // instantiate and draw the chart
+        var chart = new google.visualization.ColumnChart(document.getElementById('column_chart'));
+        chart.draw(data, options);
+    }
+</script>
