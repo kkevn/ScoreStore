@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using ScoreStore.Models;
+using ScoreStore.Validators;
 
 namespace ScoreStore.Areas.Identity.Pages.Account
 {
@@ -52,6 +53,9 @@ namespace ScoreStore.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
+            [ProfileUnique(nameof(Email))]
+            [RegularExpression(@"^[\w\d_-]+$", ErrorMessage = "The {0} can only include letters, digits, dashes and underscores.")]
+            [StringLength(32, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
             [Display(Name = "Profile Name")]
             public string Profile { get; set; }
 
