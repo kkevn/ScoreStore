@@ -341,6 +341,9 @@ namespace ScoreStore.Controllers
                 // obtain the user with Id
                 var currentUser = _userManager.FindByIdAsync(userId).Result;
 
+                // obtain list of all users in database
+                var users = _userManager.Users;
+
                 // obtain list of all scores in database
                 var scores = _context.Scores;
 
@@ -353,22 +356,28 @@ namespace ScoreStore.Controllers
                 ViewBag.Title = game.Title;
                 ViewBag.ImageURL = game.ImageURL;
 
-                //var ratio = ChartHelper.CalculateWinRatio(score.Wins, score.Losses);
-
                 // obtain top 5 score win entries for current user and friends for this game
                 var score_cols = scores.Where(s => s.GameId == gameIdVal);
                 score_cols = score_cols.Where(s => currentUser.FriendList.Contains(s.UserId) || userId.Equals(s.UserId));
                 score_cols = score_cols.OrderByDescending(s => s.Wins).Take(5);
 
-                // store list as string in view data
-                var columns = score_cols.Select(s => new { s.UserId, s.Wins }).ToList();
-                //columns = ChartHelper.FriendColumn(score_cols);
-                ViewData["columns"] = String.Join("_", columns);
+                // get selection of users and their respective win counts
+                var columns = score_cols.Select(s => new { s.UserId, s.Wins });
 
-                //ViewData["area"] = "chris,kev,chris,ray,chris,";
-                //ViewData["area"] = score.StreakList;
+                // join result by user ID to obtain list containing profile names instead
+                var score_cols_joined = users.Join(columns,
+                    u => u.Id,
+                    col => col.UserId,
+                    (u, col) => new {
+                        Profile = u.Name,
+                        Wins = col.Wins
+                    }).ToList();
 
-                ViewBag.UserName = currentUser.Name;
+                // store result in view data
+                ViewData["columns"] = String.Join(":", score_cols_joined);
+
+                // store user profile name in view bag
+                ViewBag.ProfileName = currentUser.Name;
 
                 // return score entry
                 return View(score);
@@ -407,7 +416,7 @@ namespace ScoreStore.Controllers
             }
         }
 
-        public async Task<IActionResult> SubmitScore(int Game, String Id)
+        public async Task<IActionResult> SubmitScore(int Game, String Name)
         {
             // obtain reference to currently logged in user by Id
             var userId = _userManager.GetUserId(HttpContext.User);
@@ -428,38 +437,38 @@ namespace ScoreStore.Controllers
                 // obtain score entry for this user and game combination
                 var score = scores.Where(s => s.UserId.Equals(userId) && s.GameId == Game).FirstOrDefault();
 
-                // mark current user ID as default winner
-                string winningId = userId;
+                // mark current user's profile name as default winner
+                string winningName = currentUser.Name;
 
                 // increment Wins counter if current user won, otherwise add loss
-                if (Id.Equals("{0}")) {
+                if (Name.Equals("{0}")) {
                     score.Wins++;
                 } else {
                     score.Losses++;
-                    winningId = Id; // update ID of winning user (will be {x} if 'Other' was selected)
+                    winningName = !Name.Equals("{x}") ? Name : "Other"; // update profile name of winning user (should be 'Other' if '{x}' was routed)
                 }
 
-                // append Id of winning user with a delimiter to this score's streak list
+                // append profile name of winning user with a delimiter to this score's streak list
                 string delimiter = ",";
                 if (score.StreakList != null)
-                    score.StreakList += (winningId + delimiter);
+                    score.StreakList += (winningName + delimiter);
                 else
-                    score.StreakList = winningId + delimiter;
+                    score.StreakList = winningName + delimiter;
 
                 // update score on database
                 await _context.SaveChangesAsync();
 
                 // append Id of winning user with a delimiter to this user's streak list
                 if (currentUser.StreakList != null)
-                    currentUser.StreakList += (winningId + delimiter);
+                    currentUser.StreakList += (winningName + delimiter);
                 else
-                    currentUser.StreakList = winningId + delimiter;
+                    currentUser.StreakList = winningName + delimiter;
 
                 // update user on database
                 await _userManager.UpdateAsync(currentUser);
 
                 // logging message for debugging purposes
-                System.Diagnostics.Debug.WriteLine("\t==> Current user {" + userId + "} added score for game {" + Game + "} with winner {" + winningId + "}");
+                System.Diagnostics.Debug.WriteLine("\t==> Current user {" + userId + "} added score for game {" + Game + "} with winner {" + winningName + "}");
 
                 // return ViewGame view with game Id of score being submitted for
                 return RedirectToAction("ViewGame", new { Id = Game });
@@ -508,7 +517,7 @@ namespace ScoreStore.Controllers
                     }).ToList();
 
                 // store result in view data
-                ViewData["columns"] = String.Join("_", user_wins_joined);
+                ViewData["columns"] = String.Join(":", user_wins_joined);
 
                 return View(currentUser);
             }

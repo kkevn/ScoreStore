@@ -39,8 +39,8 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 
-    // obtain unique username of current user
-    //var userName = @(ViewBag.UserName);
+    // obtain unique profile name of current user
+    var profileName = "@(ViewBag.ProfileName)";
 
     // load charts and packages
     google.charts.load('current', { 'packages': ['corechart', 'timeline'] });
@@ -93,16 +93,16 @@
             data.addColumn('number', 'Wins');
 
         // retrieve win list from view data
-        // has format: { UserId = ..., Wins = ... }_{ UserId = ..., Wins = ...}_{etc...}
+        // has format: { Profile = ..., Wins = ... }:{ Profile = ..., Wins = ...}:{etc...}
         var input = "@ViewData["columns"]";
 
         // add row to data table for each element in the split input
-        input.split('_').forEach(function (s) {
+        input.split(':').forEach(function (s) {
 
             // parse current string by removing unnecessary characters, ex:
-            //  given input: '{ UserId = test_user, Wins = 123 }'
+            //  given input: '{ Profile = test_user, Wins = 123 }'
             //  when parsed: 'test_user,123'
-            var parsed = s.replace("{ UserId = ", "");
+            var parsed = s.replace("{ Profile = ", "");
             parsed = parsed.replace(" Wins = ", "");
             parsed = parsed.replace(" }", "");
 
@@ -217,7 +217,7 @@
         for (let i = 0; i < streakList.length; i++) {
 
             // if current user in streak list iteration is this user, set result to a win
-            let result = streakList[i] == "@Model.UserId" ? 'Win' : 'Loss';
+            let result = streakList[i] == profileName ? 'Win' : 'Loss';
 
             // add a row to the data table with current status
             data.addRow([result, null, result, new Date(i, 0, 0), new Date(i + 1, 0 , 0)]);

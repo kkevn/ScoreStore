@@ -77,11 +77,11 @@
             data.addColumn('number', 'Wins');
 
         // retrieve win list from view data
-        // has format: { GameName = ..., GameWins = ... }_{ GameName = ..., GameWins = ...}_{etc...}
+        // has format: { GameName = ..., GameWins = ... }:{ GameName = ..., GameWins = ...}:{etc...}
         var input = "@ViewData["columns"]";
 
         // add row to data table for each element in the split input
-        input.split('_').forEach(function (s) {
+        input.split(':').forEach(function (s) {
 
             // parse current string by removing unnecessary characters, ex:
             //  given input: '{ GameName = Soccer, GameWins = 123 }'
@@ -201,7 +201,7 @@
         for (let i = 0; i < streakList.length; i++) {
 
             // if current user in streak list iteration is this user, set result to a win
-            let result = streakList[i] == "@Model.Id" ? 'Win' : 'Loss';
+            let result = streakList[i] == "@Model.Name" ? 'Win' : 'Loss';
 
             // add a row to the data table with current status
             data.addRow([result, null, result, new Date(i, 0, 0), new Date(i + 1, 0 , 0)]);

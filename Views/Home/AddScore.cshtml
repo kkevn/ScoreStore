@@ -17,8 +17,8 @@
 <div id="div_selectfriend">
     @foreach (var item in Model)
     {
-        <input type="radio" id="@item.Id" name="winner" value="@item.Id" disabled>
-        <label for="@item.Id">@item.NormalizedEmail</label><br>
+        <input type="radio" id="@item.Name" name="winner" value="@item.Name" disabled>
+        <label for="@item.Name">@item.Name</label><br>
     }
     <input type="radio" id="{x}" name="winner" value="{x}" disabled>
     <label for="{x}"><i>Other</i></label>
@@ -70,7 +70,7 @@
         if (document.getElementById("rb_win").checked) {
 
             // call asp action from controller to submit user as winner for this score
-            window.location.href = '@Url.Action("SubmitScore", "Home")?game=' + gameId + '&id={0}';
+            window.location.href = '@Url.Action("SubmitScore", "Home")?game=' + gameId + '&name={0}';
         } else {
 
             // create flag for identifying if a winner was selected
@@ -84,7 +84,7 @@
 
                 // if found, call asp action from controller to submit friend as winner for this score
                 if (rb_friends[i].checked) {
-                    window.location.href = '@Url.Action("SubmitScore", "Home")?game=' + gameId + '&id=' + rb_friends[i].value;
+                    window.location.href = '@Url.Action("SubmitScore", "Home")?game=' + gameId + '&name=' + rb_friends[i].value;
                     winnerSelected = true;
                 }
             }
