@@ -52,8 +52,8 @@ namespace ScoreStore.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [Display(Name = "Username")]
-            public string Name { get; set; }
+            [Display(Name = "Profile Name")]
+            public string Profile { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -80,7 +80,7 @@ namespace ScoreStore.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 // also adding custom username to ApplicationUser object during registration
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Name = Input.Name };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Name = Input.Profile };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
