@@ -364,6 +364,11 @@ namespace ScoreStore.Controllers
                 //columns = ChartHelper.FriendColumn(score_cols);
                 ViewData["columns"] = String.Join("_", columns);
 
+                //ViewData["area"] = "chris,kev,chris,ray,chris,";
+                //ViewData["area"] = score.StreakList;
+
+                ViewBag.UserName = currentUser.Name;
+
                 // return score entry
                 return View(score);
             }
@@ -457,6 +462,51 @@ namespace ScoreStore.Controllers
 
                 // return ViewGame view with game Id of score being submitted for
                 return RedirectToAction("ViewGame", new { Id = Game });
+            }
+        }
+
+        public IActionResult ViewStats()
+        {
+            // obtain reference to currently logged in user by Id
+            var userId = _userManager.GetUserId(HttpContext.User);
+
+            // redirect user to log in if not already signed in
+            if (userId == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+            else
+            {
+                // obtain the user with Id
+                var currentUser = _userManager.FindByIdAsync(userId).Result;
+
+                // obtain list of all scores in database
+                var scores = _context.Scores;
+                var games = _context.Game;
+
+                // obtain all score entries for this user
+                var user_scores = scores.Where(s => s.UserId.Equals(userId));
+
+                // store user's total wins and losses in a viewbag
+                ViewBag.Wins = user_scores.Sum(s => s.Wins);
+                ViewBag.Losses = user_scores.Sum(s => s.Losses);
+
+                // get selection of user's games and their respective win counts
+                var user_wins = user_scores.Select(s => new { s.GameId, s.Wins });
+
+                // join result by game ID to obtain list containing game titles instead
+                var user_wins_joined = games.Join(user_wins,
+                    g => g.Id,
+                    uw => uw.GameId,
+                    (g, uw) => new {
+                        GameName = g.Title,
+                        GameWins = uw.Wins
+                    }).ToList();
+
+                // store result in view data
+                ViewData["columns"] = String.Join("_", user_wins_joined);
+
+                return View(currentUser);
             }
         }
 
