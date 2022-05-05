@@ -36,8 +36,9 @@ Please see the [issue tracker](https://github.com/kkevn/ScoreStore/issues) for a
 
 * **C#** for program and controller logic
 * **HTML/CSS** for view layouts
+* **JavaScript** for webpage logic
 * **ASP.NET** for applicaiton development and MVC design
-* **SQL** for database work
+* **[Google Charts](https://developers.google.com/chart)** for rendering charts
 
 ---
 
