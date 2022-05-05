@@ -344,8 +344,9 @@ namespace ScoreStore.Controllers
                 // obtain list of all scores in database
                 var scores = _context.Scores;
 
-                // obtain score entry for this user and game combination
+                // obtain score entry for this user and game combination and store match totals in a view bag
                 var score = scores.Where(s => s.UserId.Equals(userId) && s.GameId == gameIdVal).FirstOrDefault();
+                ViewBag.Matches = score.Wins + score.Losses;
 
                 // store game title and cover art URL in a viewbag
                 var game = _context.Game.Where(g => g.Id == gameIdVal).FirstOrDefault();
@@ -487,9 +488,12 @@ namespace ScoreStore.Controllers
                 // obtain all score entries for this user
                 var user_scores = scores.Where(s => s.UserId.Equals(userId));
 
-                // store user's total wins and losses in a viewbag
-                ViewBag.Wins = user_scores.Sum(s => s.Wins);
-                ViewBag.Losses = user_scores.Sum(s => s.Losses);
+                // store user's total wins, losses and matches in a viewbag
+                var wins = user_scores.Sum(s => s.Wins);
+                var losses = user_scores.Sum(s => s.Losses);
+                ViewBag.Wins = wins;
+                ViewBag.Losses = losses;
+                ViewBag.Matches = wins + losses;
 
                 // get selection of user's games and their respective win counts
                 var user_wins = user_scores.Select(s => new { s.GameId, s.Wins });
