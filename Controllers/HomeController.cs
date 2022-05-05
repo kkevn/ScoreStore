@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ScoreStore.Data;
-using ScoreStore.Helpers;
 using ScoreStore.Models;
 using System;
 using System.Collections.Generic;
