@@ -34,6 +34,11 @@ namespace ScoreStore.Controllers
             return View();
         }
 
+        public IActionResult MissingUser()
+        {
+            return View();
+        }
+
         public IActionResult UserInfo()
         {
             // obtain reference to currently logged in user by Id
@@ -192,6 +197,54 @@ namespace ScoreStore.Controllers
 
                 // return FriendList view with model of subset of users with Id contained in friend list of current user
                 return View("FriendList", users.Where(u => currentUser.FriendList.Contains(u.Id)));
+            }
+        }
+
+        public IActionResult ViewFriend(String Id)
+        {
+            // obtain reference to friend by Id
+            var userId = Id;
+
+            // redirect user to inform friend no longer exists
+            if (userId == null)
+            {
+                return RedirectToPage("MissingUser");
+            }
+            else
+            {
+                // obtain the friend user with Id
+                var friendUser = _userManager.FindByIdAsync(userId).Result;
+
+                // obtain list of all scores in database
+                var scores = _context.Scores;
+                var games = _context.Game;
+
+                // obtain all score entries for this friend
+                var user_scores = scores.Where(s => s.UserId.Equals(userId));
+
+                // store friend's total wins, losses and matches in a viewbag
+                var wins = user_scores.Sum(s => s.Wins);
+                var losses = user_scores.Sum(s => s.Losses);
+                ViewBag.Wins = wins;
+                ViewBag.Losses = losses;
+                ViewBag.Matches = wins + losses;
+
+                // get selection of friend's games and their respective win counts
+                var user_wins = user_scores.Select(s => new { s.GameId, s.Wins });
+
+                // join result by game ID to obtain list containing game titles instead
+                var user_wins_joined = games.Join(user_wins,
+                    g => g.Id,
+                    uw => uw.GameId,
+                    (g, uw) => new {
+                        GameName = g.Title,
+                        GameWins = uw.Wins
+                    }).ToList();
+
+                // store result in view data
+                ViewData["columns"] = String.Join(":", user_wins_joined);
+
+                return View(friendUser);
             }
         }
 

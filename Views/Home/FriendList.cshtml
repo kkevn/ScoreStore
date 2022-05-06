@@ -13,6 +13,12 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
+                Win/Loss Ratio
+            </th>
+            <th>
+                Game Count
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.NormalizedEmail)
             </th>
             <th></th>
@@ -28,10 +34,18 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
+                %
+            </td>
+            <td>
+                0
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.NormalizedEmail)
             </td>
             <td>
                 <!--<a asp-action="RemoveFriend" asp-route-id="@item.Id">Remove</a>-->
+                <a asp-action="ViewFriend" asp-route-id="@item.Id">View Scores</a>
+                <!--<button onClick="ViewFriendStats('@item.Id')">View Scores</button>-->
                 <button onClick="ConfirmFriendRemoval('@item.Name', '@item.Id')">Remove</button>
             </td>
         </tr>
@@ -40,6 +54,15 @@
 </table>
 
 <script type="text/javascript">
+    /**
+     * Redirects the user to the overall stats page for this friend.
+     */
+    function ViewFriendStats(id) {
+
+        // call asp action from controller to remove specified friend (and clear ambient routing value)
+        window.location.href = '@Url.Action("ViewFriend", "Home", new { id = "" })/' + id;
+    }
+
     /**
      * Prompts a dialog to the user for confirming removal of the specified friend
      * from their friend list.
