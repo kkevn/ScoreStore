@@ -1,28 +1,15 @@
-﻿@model ScoreStore.Models.Scores
+﻿@model ScoreStore.Models.ApplicationUser
 
-<div>
-    <!--<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |-->
-    <a asp-action="AddScore" asp-route-id="@Model.GameId">Add Score</a> |
-    <a asp-action="GameList">Back to List</a>
-</div>
-<hr />
-
-<!--<div class="grid-container">
-    <div class="grid-item" id="donut_chart"></div>
-    <div class="grid-item" id="column_chart"></div>
-    <div class="grid-item" id="area_chart"></div>
-    <div class="grid-item" id="timeline"></div>
-</div>-->
 <div class="quad_container">
     <div class="quad_i_ii">
         <div class="quad_ii" id="donut_chart"></div>
         <div class="quad_i">
             <div class="quad_i_a">
                 <div class="quad_i_a_1">
-                    <img src="@ViewBag.ImageURL" alt="@ViewBag.Title Cover" width="256" height="256">
+                    <!--<img src="Model.Avatar" alt="@Model.Name Avatar" width="256" height="256">-->
                 </div>
                 <div class="quad_i_a_2">
-                    <h3>@ViewBag.Title</h3>
+                    <h3>@Model.Name</h3>
                 </div>
                 <div class="quad_i_a_3">@ViewBag.Matches scores</div>
             </div>
@@ -38,9 +25,6 @@
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-
-    // obtain unique profile name of current user
-    var profileName = "@(ViewBag.ProfileName)";
 
     // load charts and packages
     google.charts.load('current', { 'packages': ['corechart', 'timeline'] });
@@ -60,11 +44,11 @@
     // render the win loss ratio donut chart
     function drawDonutChart() {
 
-        // initialize data table with user's wins and losses from model
+        // initialize data table with user's total wins and losses from view bag
         var data = google.visualization.arrayToDataTable([
           ['Result', 'Count'],
-          ['Wins', @Model.Wins],
-          ['Losses', @Model.Losses],
+          ['Wins', parseInt(@(ViewBag.Wins))],
+          ['Losses', parseInt(@(ViewBag.Losses))],
         ]);
 
         // set options for this chart
@@ -87,31 +71,31 @@
     // render the win totals column chart
     function drawColumnChart() {
 
-        // initialize empty data table with columns for users and their win counts
+        // initialize empty data table with columns for user and their win counts for each game
         var data = new google.visualization.DataTable();
-            data.addColumn('string', 'User');
+            data.addColumn('string', 'Game');
             data.addColumn('number', 'Wins');
 
         // retrieve win list from view data
-        // has format: { Profile = ..., Wins = ... }:{ Profile = ..., Wins = ...}:{etc...}
+        // has format: { GameName = ..., GameWins = ... }:{ GameName = ..., GameWins = ...}:{etc...}
         var input = "@ViewData["columns"]";
 
         // add row to data table for each element in the split input
         input.split(':').forEach(function (s) {
 
             // parse current string by removing unnecessary characters, ex:
-            //  given input: '{ Profile = test_user, Wins = 123 }'
-            //  when parsed: 'test_user,123'
-            var parsed = s.replace("{ Profile = ", "");
-            parsed = parsed.replace(" Wins = ", "");
+            //  given input: '{ GameName = Soccer, GameWins = 123 }'
+            //  when parsed: 'Soccer,123'
+            var parsed = s.replace("{ GameName = ", "");
+            parsed = parsed.replace(" GameWins = ", "");
             parsed = parsed.replace(" }", "");
 
-            // extract user id and win totals from parsed string
+            // extract game title and win totals from parsed string
             var delimIndex = parsed.indexOf(',');
-            var user = parsed.substring(0, delimIndex);
+            var game = parsed.substring(0, delimIndex);
             var wins = parsed.substring(delimIndex + 1, parsed.length);
 
-            data.addRow([user, parseInt(wins)]);   // add parsed values to data table
+            data.addRow([game, parseInt(wins)]);   // add parsed values to data table
         });
 
         // set options for this chart
@@ -217,7 +201,7 @@
         for (let i = 0; i < streakList.length; i++) {
 
             // if current user in streak list iteration is this user, set result to a win
-            let result = streakList[i] == profileName ? 'Win' : 'Loss';
+            let result = streakList[i] == "@Model.Name" ? 'Win' : 'Loss';
 
             // add a row to the data table with current status
             data.addRow([result, null, result, new Date(i, 0, 0), new Date(i + 1, 0 , 0)]);

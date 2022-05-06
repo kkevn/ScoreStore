@@ -337,16 +337,46 @@ namespace ScoreStore.Controllers
             }
             else
             {
+                // obtain the user with Id
+                var currentUser = _userManager.FindByIdAsync(userId).Result;
+
+                // obtain list of all users in database
+                var users = _userManager.Users;
+
                 // obtain list of all scores in database
                 var scores = _context.Scores;
 
-                // obtain score entry for this user and game combination
+                // obtain score entry for this user and game combination and store match totals in a view bag
                 var score = scores.Where(s => s.UserId.Equals(userId) && s.GameId == gameIdVal).FirstOrDefault();
+                ViewBag.Matches = score.Wins + score.Losses;
 
                 // store game title and cover art URL in a viewbag
                 var game = _context.Game.Where(g => g.Id == gameIdVal).FirstOrDefault();
                 ViewBag.Title = game.Title;
                 ViewBag.ImageURL = game.ImageURL;
+
+                // obtain top 5 score win entries for current user and friends for this game
+                var score_cols = scores.Where(s => s.GameId == gameIdVal);
+                score_cols = score_cols.Where(s => currentUser.FriendList.Contains(s.UserId) || userId.Equals(s.UserId));
+                score_cols = score_cols.OrderByDescending(s => s.Wins).Take(5);
+
+                // get selection of users and their respective win counts
+                var columns = score_cols.Select(s => new { s.UserId, s.Wins });
+
+                // join result by user ID to obtain list containing profile names instead
+                var score_cols_joined = users.Join(columns,
+                    u => u.Id,
+                    col => col.UserId,
+                    (u, col) => new {
+                        Profile = u.Name,
+                        Wins = col.Wins
+                    }).ToList();
+
+                // store result in view data
+                ViewData["columns"] = String.Join(":", score_cols_joined);
+
+                // store user profile name in view bag
+                ViewBag.ProfileName = currentUser.Name;
 
                 // return score entry
                 return View(score);
@@ -385,7 +415,7 @@ namespace ScoreStore.Controllers
             }
         }
 
-        public async Task<IActionResult> SubmitScore(int Game, String Id)
+        public async Task<IActionResult> SubmitScore(int Game, String Name)
         {
             // obtain reference to currently logged in user by Id
             var userId = _userManager.GetUserId(HttpContext.User);
@@ -406,41 +436,89 @@ namespace ScoreStore.Controllers
                 // obtain score entry for this user and game combination
                 var score = scores.Where(s => s.UserId.Equals(userId) && s.GameId == Game).FirstOrDefault();
 
-                // mark current user ID as default winner
-                string winningId = userId;
+                // mark current user's profile name as default winner
+                string winningName = currentUser.Name;
 
                 // increment Wins counter if current user won, otherwise add loss
-                if (Id.Equals("{0}")) {
+                if (Name.Equals("{0}")) {
                     score.Wins++;
                 } else {
                     score.Losses++;
-                    winningId = Id; // update ID of winning user (will be {x} if 'Other' was selected)
+                    winningName = !Name.Equals("{x}") ? Name : "Other"; // update profile name of winning user (should be 'Other' if '{x}' was routed)
                 }
 
-                // append Id of winning user with a delimiter to this score's streak list
+                // append profile name of winning user with a delimiter to this score's streak list
                 string delimiter = ",";
                 if (score.StreakList != null)
-                    score.StreakList += (winningId + delimiter);
+                    score.StreakList += (winningName + delimiter);
                 else
-                    score.StreakList = winningId + delimiter;
+                    score.StreakList = winningName + delimiter;
 
                 // update score on database
                 await _context.SaveChangesAsync();
 
                 // append Id of winning user with a delimiter to this user's streak list
                 if (currentUser.StreakList != null)
-                    currentUser.StreakList += (winningId + delimiter);
+                    currentUser.StreakList += (winningName + delimiter);
                 else
-                    currentUser.StreakList = winningId + delimiter;
+                    currentUser.StreakList = winningName + delimiter;
 
                 // update user on database
                 await _userManager.UpdateAsync(currentUser);
 
                 // logging message for debugging purposes
-                System.Diagnostics.Debug.WriteLine("\t==> Current user {" + userId + "} added score for game {" + Game + "} with winner {" + winningId + "}");
+                System.Diagnostics.Debug.WriteLine("\t==> Current user {" + userId + "} added score for game {" + Game + "} with winner {" + winningName + "}");
 
                 // return ViewGame view with game Id of score being submitted for
                 return RedirectToAction("ViewGame", new { Id = Game });
+            }
+        }
+
+        public IActionResult ViewStats()
+        {
+            // obtain reference to currently logged in user by Id
+            var userId = _userManager.GetUserId(HttpContext.User);
+
+            // redirect user to log in if not already signed in
+            if (userId == null)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+            else
+            {
+                // obtain the user with Id
+                var currentUser = _userManager.FindByIdAsync(userId).Result;
+
+                // obtain list of all scores in database
+                var scores = _context.Scores;
+                var games = _context.Game;
+
+                // obtain all score entries for this user
+                var user_scores = scores.Where(s => s.UserId.Equals(userId));
+
+                // store user's total wins, losses and matches in a viewbag
+                var wins = user_scores.Sum(s => s.Wins);
+                var losses = user_scores.Sum(s => s.Losses);
+                ViewBag.Wins = wins;
+                ViewBag.Losses = losses;
+                ViewBag.Matches = wins + losses;
+
+                // get selection of user's games and their respective win counts
+                var user_wins = user_scores.Select(s => new { s.GameId, s.Wins });
+
+                // join result by game ID to obtain list containing game titles instead
+                var user_wins_joined = games.Join(user_wins,
+                    g => g.Id,
+                    uw => uw.GameId,
+                    (g, uw) => new {
+                        GameName = g.Title,
+                        GameWins = uw.Wins
+                    }).ToList();
+
+                // store result in view data
+                ViewData["columns"] = String.Join(":", user_wins_joined);
+
+                return View(currentUser);
             }
         }
 
