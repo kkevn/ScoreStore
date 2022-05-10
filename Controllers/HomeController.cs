@@ -122,9 +122,75 @@ namespace ScoreStore.Controllers
                 // obtain list of all users in database
                 var users = _userManager.Users;
 
-                // return subset of users with Id contained in friend list of current user
-                return View(users.Where(u => currentUser.FriendList.Contains(u.Id)));
+                // obtain subset of users with Id contained in friend list of current user
+                var users_friends = users.Where(u => currentUser.FriendList.Contains(u.Id));
+
+                // return subset of users (and their overall scores) whose Id is contained in friend list of current user
+                return View(FriendListHelper(currentUser.FriendList, users_friends));
             }
+        }
+
+        /**
+         * Helper function that returns the current user's friends with their overall scores in the form of a value tuple. Uses the 
+         * current user's friend list (in both string and model form) to generate the list of users necessary to output.
+         */
+        private List<(string, string, string, double, int)> FriendListHelper(string friendList, IQueryable<ApplicationUser> friends)
+        {
+            // trim user's friends to a selection of just Id, profile name, and email
+            var friends_trimmed = friends.Select(f => new { f.Id, f.Name, f.NormalizedEmail });
+
+            // obtain all scores in database
+            var scores = _context.Scores;
+
+            // obtain subset of scores with Id contained in friend list of current user
+            var scores_friends = scores.Where(s => friendList.Contains(s.UserId));
+
+            // group each score by user containing an Id, win count, loss count, and game count
+            var scores_grouped = scores_friends.GroupBy(sf => sf.UserId)
+                .Select(e => new
+                {
+                    UserId = e.Key,
+                    Wins = e.Sum(s => s.Wins),
+                    Losses = e.Sum(s => s.Losses),
+                    Games = e.Count()
+                });
+
+            // join friends and their scores and calculate their win/loss ratio
+            var friends_calculated = friends_trimmed.Join(scores_grouped,
+                sf => sf.Id,
+                sg => sg.UserId,
+                (sf, sg) => new
+                {
+                    Id = sf.Id,
+                    Name = sf.Name,
+                    NormalizedEmail = sf.NormalizedEmail,
+                    Ratio = Math.Round((double) sg.Wins / (sg.Wins + sg.Losses) * 100, 2),
+                    //Wins = sg.Wins,
+                    //Losses = sg.Losses,
+                    Games = sg.Games
+                });
+
+            // left outer join result above with friend list to include friends without scores
+            var test = friends_trimmed.GroupJoin(friends_calculated,
+                ft => ft.Id,
+                fc => fc.Id,
+                (x, y) => new 
+                { 
+                    FT = x, 
+                    FC = y 
+                }).SelectMany(
+                    x => x.FC.DefaultIfEmpty(),
+                    (x, y) => new 
+                    { 
+                        Id = x.FT.Id,
+                        Name = x.FT.Name,
+                        NormalizedEmail = x.FT.NormalizedEmail,
+                        Ratio = y.Ratio,
+                        Games = y.Games
+                    });
+
+            // return list of value tuples containing current user's friends and their scores
+            return test.AsEnumerable().Select(f => new ValueTuple<string, string, string, double, int>(f.Id, f.Name, f.NormalizedEmail, f.Ratio, f.Games)).ToList();
         }
 
         public async Task<IActionResult> AddFriend()
@@ -162,7 +228,8 @@ namespace ScoreStore.Controllers
                 var users = _userManager.Users;
 
                 // return FriendList view with model of subset of users with Id contained in friend list of current user
-                return View("FriendList", users.Where(u => currentUser.FriendList.Contains(u.Id)));
+                //return View("FriendList", users.Where(u => currentUser.FriendList.Contains(u.Id)));
+                return View("FriendList", FriendListHelper(currentUser.FriendList, users.Where(u => currentUser.FriendList.Contains(u.Id))));
             }
         }
 
@@ -196,7 +263,8 @@ namespace ScoreStore.Controllers
                 var users = _userManager.Users;
 
                 // return FriendList view with model of subset of users with Id contained in friend list of current user
-                return View("FriendList", users.Where(u => currentUser.FriendList.Contains(u.Id)));
+                //return View("FriendList", users.Where(u => currentUser.FriendList.Contains(u.Id)));
+                return View("FriendList", FriendListHelper(currentUser.FriendList, users.Where(u => currentUser.FriendList.Contains(u.Id))));
             }
         }
 

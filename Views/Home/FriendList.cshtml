@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ScoreStore.Models.ApplicationUser>
+﻿@model List<(string Id, string Name, string NormalizedEmail, double Ratio, int Games)>
 
 <p>
     <a asp-action="SearchUsers">Add New</a>
@@ -7,10 +7,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                User
             </th>
             <th>
                 Win/Loss Ratio
@@ -19,7 +19,7 @@
                 Game Count
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NormalizedEmail)
+                Email
             </th>
             <th></th>
         </tr>
@@ -34,10 +34,10 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                %
+                @Html.DisplayFor(modelItem => item.Ratio)%
             </td>
             <td>
-                0
+                @Html.DisplayFor(modelItem => item.Games)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NormalizedEmail)
