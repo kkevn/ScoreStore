@@ -165,7 +165,7 @@ namespace ScoreStore.Controllers
                     Id = sf.Id,
                     Name = sf.Name,
                     NormalizedEmail = sf.NormalizedEmail,
-                    Ratio = Math.Round((double) sg.Wins / (sg.Wins + sg.Losses) * 100, 2),
+                    Ratio = (sg.Wins + sg.Losses > 0) ? Math.Round((double) sg.Wins / (sg.Wins + sg.Losses) * 100, 2) : 0.0,
                     Matches = sg.Wins + sg.Losses,
                     //Wins = sg.Wins,
                     //Losses = sg.Losses,
