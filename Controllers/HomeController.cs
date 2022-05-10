@@ -94,7 +94,8 @@ namespace ScoreStore.Controllers
                 users = users.Where(u => u.Name.Contains(SearchInput) || u.NormalizedEmail.Contains(SearchInput));
 
                 // filter list of users not already in current user's friend list
-                users = users.Where(u => !currentUser.FriendList.Contains(u.Id));
+                if (currentUser.FriendList != null)
+                    users = users.Where(u => !currentUser.FriendList.Contains(u.Id));
 
                 // filter list of users no not include current user
                 users = users.Where(u => !currentUser.Id.Equals(u.Id));
