@@ -1,4 +1,4 @@
-﻿@model List<(string Id, string Name, string NormalizedEmail, double Ratio, int Games)>
+﻿@model List<(string Id, string Name, string NormalizedEmail, double Ratio, int Matches, int Games)>
 
 <p>
     <a asp-action="SearchUsers">Add New</a>
@@ -16,7 +16,10 @@
                 Win/Loss Ratio
             </th>
             <th>
-                Game Count
+                Games Played
+            </th>
+            <th>
+                Game Library
             </th>
             <th>
                 Email
@@ -36,9 +39,30 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Ratio)%
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Games)
-            </td>
+            @if (item.Matches == 1)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Matches) match
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Matches) matches
+                </td>
+            }
+            @if (item.Games == 1)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Games) game
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Games) games
+                </td>
+            }
             <td>
                 @Html.DisplayFor(modelItem => item.NormalizedEmail)
             </td>
