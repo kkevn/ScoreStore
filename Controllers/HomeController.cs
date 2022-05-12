@@ -340,8 +340,39 @@ namespace ScoreStore.Controllers
                 var games = _context.Game;
 
                 // return subset of games with Id contained in game list of current user
-                return View(games.Where(g => currentUser.GameList.Contains("{" + g.Id + "}")));
+                return View(GameListHelper(userId, games.Where(g => currentUser.GameList.Contains("{" + g.Id + "}"))));
             }
+        }
+
+        /**
+         * Helper function that returns the current user's games with their overall scores in the form of a value tuple. Uses the 
+         * current user's Id and game list IQueryable to generate the list of games necessary to output.
+         */
+        private List<(int, string, string, double, int)> GameListHelper(string userId, IQueryable<Game> games)
+        {
+            // obtain all scores in database
+            var scores = _context.Scores;
+
+            // obtain subset of scores for current user
+            var scores_user = scores.Where(s => userId.Equals(s.UserId));
+
+            // join user's game list with their respective scores and calculate their win/loss ratio
+            var games_calculated = games.Join(scores_user,
+                g => g.Id,
+                su => su.GameId,
+                (g, su) => new
+                {
+                    Id = g.Id,
+                    ImageURL = g.ImageURL,
+                    Title = g.Title,
+                    Ratio = (su.Wins + su.Losses > 0) ? Math.Round((double)su.Wins / (su.Wins + su.Losses) * 100, 2) : 0.0,
+                    Matches = su.Wins + su.Losses,
+                    //Wins = sg.Wins,
+                    //Losses = sg.Losses
+                });
+
+            // return list of value tuples containing current user's games and their scores
+            return games_calculated.AsEnumerable().Select(g => new ValueTuple<int, string, string, double, int>(g.Id, g.ImageURL, g.Title, g.Ratio, g.Matches)).ToList();
         }
 
         public async Task<IActionResult> AddGame()
@@ -409,7 +440,7 @@ namespace ScoreStore.Controllers
                 var games = _context.Game;
 
                 // return GameList view with model of subset of games with Id contained in game list of current user
-                return View("GameList", games.Where(g => currentUser.GameList.Contains("{" + g.Id + "}")));
+                return View("GameList", GameListHelper(userId, games.Where(g => currentUser.GameList.Contains("{" + g.Id + "}"))));
             }
         }
 
@@ -442,7 +473,7 @@ namespace ScoreStore.Controllers
                 var games = _context.Game;
 
                 // return GameList view with model of subset of games with Id contained in game list of current user
-                return View("GameList", games.Where(g => currentUser.GameList.Contains("{" + g.Id + "}")));
+                return View("GameList", GameListHelper(userId, games.Where(g => currentUser.GameList.Contains("{" + g.Id + "}"))));
             }
         }
 
