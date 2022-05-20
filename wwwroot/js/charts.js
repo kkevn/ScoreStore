@@ -306,3 +306,10 @@ function drawTimeline() {
     var chart = new google.visualization.Timeline(document.getElementById('timeline'));
     chart.draw(data, options);
 }
+
+// on window resize, redraw charts to dynamically fit on screen
+window.onresize = function () {
+    drawAreaChart();
+    drawColumnChartGames();
+    drawColumnChartUsers();
+}
