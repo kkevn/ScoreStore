@@ -1,245 +1,55 @@
 ﻿@model ScoreStore.Models.Scores
 
-<div>
-    <!--<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |-->
-    <a asp-action="AddScore" asp-route-id="@Model.GameId">Add Score</a> |
-    <a asp-action="GameList">Back to List</a>
-</div>
-<hr />
-
-<!--<div class="grid-container">
-    <div class="grid-item" id="donut_chart"></div>
-    <div class="grid-item" id="column_chart"></div>
-    <div class="grid-item" id="area_chart"></div>
-    <div class="grid-item" id="timeline"></div>
-</div>-->
-<div class="quad_container">
-    <div class="quad_i_ii">
-        <div class="quad_ii" id="donut_chart"></div>
-        <div class="quad_i">
-            <div class="quad_i_a">
-                <div class="quad_i_a_1">
-                    <img src="@ViewBag.ImageURL" alt="@ViewBag.Title Cover" width="256" height="256">
-                </div>
-                <div class="quad_i_a_2">
-                    <h3>@ViewBag.Title</h3>
-                </div>
-                <div class="quad_i_a_3">@ViewBag.Matches scores</div>
+<div class="row">
+    <div class="col-sm-4">
+        <div id="donut_chart"></div>
+    </div>
+    <div class="col-sm-4">
+        <div class="row">
+            <h3>@ViewBag.Title</h3>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                @ViewBag.Matches matches
             </div>
-            <div class="quad_i_b" id="timeline"></div>
+            <div class="col-sm-2">
+                <a asp-action="AddScore" asp-route-id="@Model.GameId">Add Score</a>
+            </div>
         </div>
     </div>
-    <div class="quad_iii" id="area_chart"></div>
-    <div class="quad_iv" id="column_chart"></div>
+    <div class="col-sm-4">
+        <img src="@ViewBag.ImageURL" alt="@ViewBag.Title Cover" width="256" height="256">
+    </div>
 </div>
-
-<!-- get stats page stylesheet -->
-<link rel="stylesheet" href="~/css/stats.css" type="text/css">
+<div class="row">
+    <div class="col-sm-12">
+        <div id="timeline"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div id="area_chart"></div>
+    </div>
+    <div class="col-sm-6">
+        <div id="column_chart_users"></div>
+    </div>
+</div>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 
-    // obtain unique profile name of current user
-    var profileName = "@(ViewBag.ProfileName)";
+        // fetch 'wins' and 'losses' Model properties for donut chart win loss ratio
+        var ratioWins = @Model.Wins;
+        var ratioLosses = @Model.Losses;
 
-    // load charts and packages
-    google.charts.load('current', { 'packages': ['corechart', 'timeline'] });
+        // fetch ViewData input for column chart wins per game
+        var columnInput = "@ViewData["columns"]";
 
-    // draw win/loss donut chart
-    google.charts.setOnLoadCallback(drawDonutChart);
+        // fetch 'streaklist' Model property for area and timeline charts
+        var modelStreakList = "@Model.StreakList";
 
-    // draw win totals column chart
-    google.charts.setOnLoadCallback(drawColumnChart);
+        // fetch ViewBag input for unique name of current user
+        var modelName = "@(ViewBag.ProfileName)";
 
-    // draw win streak area chart
-    google.charts.setOnLoadCallback(drawAreaChart);
-
-    // draw win history timeline
-    google.charts.setOnLoadCallback(drawTimeline);
-
-    // render the win loss ratio donut chart
-    function drawDonutChart() {
-
-        // initialize data table with user's wins and losses from model
-        var data = google.visualization.arrayToDataTable([
-          ['Result', 'Count'],
-          ['Wins', @Model.Wins],
-          ['Losses', @Model.Losses],
-        ]);
-
-        // set options for this chart
-        var options = {
-            title: 'Win/Loss Ratio',
-          pieHole: 0.5,
-          pieSliceTextStyle: {
-            color: 'black',
-          },
-            legend: 'none',
-            width: 400,
-            height: 400,
-        };
-
-        // instantiate and draw the chart
-        var chart = new google.visualization.PieChart(document.getElementById('donut_chart'));
-        chart.draw(data, options);
-    }
-
-    // render the win totals column chart
-    function drawColumnChart() {
-
-        // initialize empty data table with columns for users and their win counts
-        var data = new google.visualization.DataTable();
-            data.addColumn('string', 'User');
-            data.addColumn('number', 'Wins');
-
-        // retrieve win list from view data
-        // has format: { Profile = ..., Wins = ... }:{ Profile = ..., Wins = ...}:{etc...}
-        var input = "@ViewData["columns"]";
-
-        // add row to data table for each element in the split input
-        input.split(':').forEach(function (s) {
-
-            // parse current string by removing unnecessary characters, ex:
-            //  given input: '{ Profile = test_user, Wins = 123 }'
-            //  when parsed: 'test_user,123'
-            var parsed = s.replace("{ Profile = ", "");
-            parsed = parsed.replace(" Wins = ", "");
-            parsed = parsed.replace(" }", "");
-
-            // extract user id and win totals from parsed string
-            var delimIndex = parsed.indexOf(',');
-            var user = parsed.substring(0, delimIndex);
-            var wins = parsed.substring(delimIndex + 1, parsed.length);
-
-            data.addRow([user, parseInt(wins)]);   // add parsed values to data table
-        });
-
-        // set options for this chart
-        var options = {
-            title: 'Win Totals',
-            //width: 800,
-            height: 400,
-            vAxis: {
-                format: '#'
-            }
-        };
-
-        // instantiate and draw the chart
-        var chart = new google.visualization.ColumnChart(document.getElementById('column_chart'));
-        chart.draw(data, options);
-    }
-
-    // render the win streak area chart
-    function drawAreaChart() {
-
-        // initialize empty data table
-        var data = new google.visualization.DataTable();
-
-        // retrieve streak list from model and remove trailing comma
-        var input = ("@Model.StreakList").slice(0, -1);
-
-        // split input into array of users in the list
-        var streakList = input.split(',');
-
-        // create array containing set of each user found in streak list
-        let uniqueUsers = Array.from([...new Set(streakList)]);
-
-        // add column to data table for match index and each unique user
-        data.addColumn('number', 'Index');
-        for (const user of uniqueUsers) {
-            data.addColumn('number', user);
-        }
-
-        // create and zero-fill array with length of unique users plus one for match index
-        // array format: [index, user1, user2, ..., userN]
-        var rows = Array(uniqueUsers.length + 1).fill(0);
-
-        data.addRow(rows);  // add default/empty score row to data table
-
-        // iterate over each user that won in the streak list
-        for (let i = 0; i < streakList.length; i++) {
-
-            // iterate over each unique user found in streak list
-            for (let j = 0; j < uniqueUsers.length; j++) {
-
-                // check if index matches current streak list user
-                if (streakList[i] == uniqueUsers[j]) {
-                    rows[j + 1]++;      // increment score when users match
-                    rows[0] = i + 1;    // increment index
-                }
-            }
-            data.addRow(rows);  // add current score state to data table
-        }
-
-        // set options for this chart
-        var options = {
-            title: 'Win Streaks',
-            //width: 800,
-            height: 400,
-            hAxis: {
-                title: 'Match History',
-                titleTextStyle: {
-                    color: '#333'
-                },
-                textPosition: 'none'
-            },
-            vAxis: {
-                format: '#',
-                minValue: 0
-            }
-        };
-
-        // instantiate and draw the chart
-        var chart = new google.visualization.AreaChart(document.getElementById('area_chart'));
-        chart.draw(data, options);
-    }
-
-    // render the win history timeline
-    function drawTimeline() {
-
-        // initialize empty data table
-        var data = new google.visualization.DataTable();
-
-        // add columns to data table
-        data.addColumn({ type: 'string', id: 'Result' });
-        data.addColumn({ type: 'string', id: 'dummy bar tooltip' });
-        data.addColumn({ type: 'string', role: 'tooltip' });
-        data.addColumn({ type: 'date', id: 'Start' });
-        data.addColumn({ type: 'date', id: 'End' });
-
-        // retrieve streak list from model and remove trailing comma
-        var input = ("@Model.StreakList").slice(0, -1);
-
-        // split input into array of users in the list
-        var streakList = input.split(',');
-
-        // iterate over each result in the streak list
-        for (let i = 0; i < streakList.length; i++) {
-
-            // if current user in streak list iteration is this user, set result to a win
-            let result = streakList[i] == profileName ? 'Win' : 'Loss';
-
-            // add a row to the data table with current status
-            data.addRow([result, null, result, new Date(i, 0, 0), new Date(i + 1, 0 , 0)]);
-        }
-
-        // set options for this chart
-        var options = {
-            width: 705,
-            height: 200,
-            timeline: {
-                groupByRowLabel: true,
-                showRowLabels: true,
-                showBarLabels: false
-            },
-            avoidOverlappingGridLines: false,
-            hAxis: {
-                format: " "
-            }
-        };
-
-        // instantiate and draw the chart
-        var chart = new google.visualization.Timeline(document.getElementById('timeline'));
-        chart.draw(data, options);
-    }
 </script>
+<script type="text/javascript" src="~/js/charts.js"></script>
