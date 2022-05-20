@@ -1,30 +1,43 @@
 ﻿@model ScoreStore.Models.ApplicationUser
 
-<div class="quad_container">
-    <div class="quad_i_ii">
-        <div class="quad_ii" id="donut_chart"></div>
-        <div class="quad_i">
-            <div class="quad_i_a">
-                <div class="quad_i_a_1">
-                    <!--<img src="Model.Avatar" alt="@Model.Name Avatar" width="256" height="256">-->
-                </div>
-                <div class="quad_i_a_2">
+        <div class="row">
+            <div class="col-sm-4">
+                <div id="donut_chart"></div>
+            </div>
+            <div class="col-sm-4">
+                <div class="row">
                     <h3>@Model.Name</h3>
                 </div>
-                <div class="quad_i_a_3">@ViewBag.Matches scores</div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        @ViewBag.Matches matches
+                    </div>
+                    <div class="col-sm-2">
+                        Add Score
+                    </div>
+                </div>
             </div>
-            <div class="quad_i_b" id="timeline"></div>
+            <div class="col-sm-4">
+                <!--<img src="Model.Avatar" alt="@Model.Name Avatar" width="256" height="256">-->
+                <img src="~/img/user-icon.png" alt="User Icon" width="256" height="256">
+            </div>
         </div>
-    </div>
-    <div class="quad_iii" id="area_chart"></div>
-    <div class="quad_iv" id="column_chart"></div>
-</div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="timeline"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div id="area_chart"></div>
+            </div>
+            <div class="col-sm-6">
+                <div id="column_chart"></div>
+            </div>
+        </div>
 
-<!-- get stats page stylesheet -->
-<link rel="stylesheet" href="~/css/stats.css" type="text/css">
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
 
     // load charts and packages
     google.charts.load('current', { 'packages': ['corechart', 'timeline'] });
@@ -40,6 +53,9 @@
 
     // draw win history timeline
     google.charts.setOnLoadCallback(drawTimeline);
+
+    // set chart height to 40% of total window height
+    var chartHeight = window.innerHeight * 0.4;
 
     // render the win loss ratio donut chart
     function drawDonutChart() {
@@ -59,8 +75,18 @@
             color: 'black',
           },
             legend: 'none',
-            width: 400,
-            height: 400,
+            width: 300,
+            //width: '100%',
+            height: 300,
+            //height: '100%',
+            chartArea: {
+                height: '100%',
+                width: '100%',
+                top: 48,
+                left: 48,
+                right: 16,
+                bottom: 48
+            },
         };
 
         // instantiate and draw the chart
@@ -101,8 +127,19 @@
         // set options for this chart
         var options = {
             title: 'Win Totals',
+            chartArea: {
+                height: '100%',
+                width: '100%',
+                top: 48,
+                left: 48,
+                right: 16,
+                bottom: 48
+            },
             //width: 800,
-            height: 400,
+            width: '100%',
+            //height: 400,
+            //height: '100%',
+            height: chartHeight,
             vAxis: {
                 format: '#'
             }
@@ -158,8 +195,19 @@
         // set options for this chart
         var options = {
             title: 'Win Streaks',
+            chartArea: {
+                height: '100%',
+                width: '100%',
+                top: 48,
+                left: 48,
+                right: 16,
+                bottom: 48
+            },
+            width: '100%',
             //width: 800,
-            height: 400,
+            //height: '100%',
+            //height: 400,
+            height: chartHeight,
             hAxis: {
                 title: 'Match History',
                 titleTextStyle: {
@@ -209,8 +257,16 @@
 
         // set options for this chart
         var options = {
-            width: 705,
+            //width: 705,
             height: 200,
+            chartArea: {
+                height: '100%',
+                width: '100%',
+                top: 48,
+                left: 48,
+                right: 16,
+                bottom: 48
+            },
             timeline: {
                 groupByRowLabel: true,
                 showRowLabels: true,
@@ -226,4 +282,4 @@
         var chart = new google.visualization.Timeline(document.getElementById('timeline'));
         chart.draw(data, options);
     }
-</script>
+    </script>
