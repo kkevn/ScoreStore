@@ -4,8 +4,11 @@ google.charts.load('current', { 'packages': ['corechart', 'timeline'] });
 // draw win/loss donut chart
 google.charts.setOnLoadCallback(drawDonutChart);
 
-// draw win totals column chart
-google.charts.setOnLoadCallback(drawColumnChart);
+// draw win totals per game column chart
+google.charts.setOnLoadCallback(drawColumnChartGames);
+
+// draw win totals per user column chart
+google.charts.setOnLoadCallback(drawColumnChartUsers);
 
 // draw win streak area chart
 google.charts.setOnLoadCallback(drawAreaChart);
@@ -56,7 +59,7 @@ function drawDonutChart() {
 }
 
 // render the win totals column chart
-function drawColumnChart() {
+function drawColumnChartGames() {
 
     // initialize empty data table with columns for user and their win counts for each game
     var data = new google.visualization.DataTable();
@@ -108,7 +111,63 @@ function drawColumnChart() {
     };
 
     // instantiate and draw the chart
-    var chart = new google.visualization.ColumnChart(document.getElementById('column_chart'));
+    var chart = new google.visualization.ColumnChart(document.getElementById('column_chart_games'));
+    chart.draw(data, options);
+}
+
+// render the win totals per user column chart
+function drawColumnChartUsers() {
+
+    // initialize empty data table with columns for users and their win counts
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'User');
+    data.addColumn('number', 'Wins');
+
+    // retrieve win list from view data
+    // has format: { Profile = ..., Wins = ... }:{ Profile = ..., Wins = ...}:{etc...}
+    var input = columnInput;
+
+    // add row to data table for each element in the split input
+    input.split(':').forEach(function (s) {
+
+        // parse current string by removing unnecessary characters, ex:
+        //  given input: '{ Profile = test_user, Wins = 123 }'
+        //  when parsed: 'test_user,123'
+        var parsed = s.replace("{ Profile = ", "");
+        parsed = parsed.replace(" Wins = ", "");
+        parsed = parsed.replace(" }", "");
+
+        // extract user and win totals from parsed string
+        var delimIndex = parsed.indexOf(',');
+        var user = parsed.substring(0, delimIndex);
+        var wins = parsed.substring(delimIndex + 1, parsed.length);
+
+        data.addRow([user, parseInt(wins)]);   // add parsed values to data table
+    });
+
+    // set options for this chart
+    var options = {
+        title: 'Win Totals',
+        chartArea: {
+            height: '100%',
+            width: '100%',
+            top: 48,
+            left: 48,
+            right: 16,
+            bottom: 48
+        },
+        //width: 800,
+        width: '100%',
+        //height: 400,
+        //height: '100%',
+        height: chartHeight,
+        vAxis: {
+            format: '#'
+        }
+    };
+
+    // instantiate and draw the chart
+    var chart = new google.visualization.ColumnChart(document.getElementById('column_chart_users'));
     chart.draw(data, options);
 }
 
