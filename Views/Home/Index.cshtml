@@ -2,9 +2,38 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    <br>
-    <h2>This project is an early work in progress; please see the <a href="https://github.com/kkevn/ScoreStore/issues">issue tracker</a> for development status.</h2>
+<!--based on bootstrap jumbotron example -->
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-3">ScoreStore</h1>
+        <p>Keep track of all the different games you like to play and how often you win. Let <i>ScoreStore</i> do the rest by providing you with the tools to best make sense of how you and your friends stack up.</p>
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <p><a class="btn btn-primary btn-lg" role="button" asp-area="Identity" asp-page="/Account/Register">Get started &raquo;</a></p>
+        }
+        </div>
 </div>
+
+<div class="container">
+    
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Submit Scores</h2>
+            <p>For any game you decide to add to your profile, you'll be able to update your scores by simply marking a win or a loss. There's no limit to how many games you can add or to the scores you need to keep.</p>
+            <p><a class="btn btn-secondary" role="button" asp-area="" asp-controller="Games" asp-action="Index">Add games &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Track Trends</h2>
+            <p>View a variety of statistics for each individual game you have on your profile. Through visual charts dynamically prepared for you, you'll be able to better understand your scores across time. Ever wanted to know your win ratio?</p>
+            <p><a class="btn btn-secondary" role="button" asp-area="" asp-controller="Home" asp-action="GameList">View stats &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Compare Competition</h2>
+            <p>Invite friends to create their own profiles and track their own scores. Then, simply add your buddies to your own friend list to see how they perform in their favorite games. Make rivals and uncover who the real champion is!</p>
+            <p><a class="btn btn-secondary" role="button" asp-area="" asp-controller="Home" asp-action="SearchUsers">Find friends &raquo;</a></p>
+        </div>
+    </div>
+
+    <hr>
+
+</div> <!-- /container -->
