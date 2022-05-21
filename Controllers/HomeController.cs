@@ -34,6 +34,11 @@ namespace ScoreStore.Controllers
             return View();
         }
 
+        public IActionResult ReportIssue()
+        {
+            return View();
+        }
+
         public IActionResult MissingUser()
         {
             return View();
