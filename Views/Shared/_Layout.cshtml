@@ -6,7 +6,8 @@
     <title>@ViewData["Title"] - ScoreStore</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/lib/simple-sidebar/css/styles.css">
+    <link rel="stylesheet" href="~/lib/simple-sidebar/css/styles.css" />
+    <link rel="stylesheet" href="~/css/all.css" />
 </head>
 <body>
     <div class="d-flex" id="wrapper">
@@ -19,9 +20,9 @@
                     <div class="sidebar-heading border-bottom text-dark bg-light">ScoreStore</div>
                 </a>
                 <div class="list-group list-group-flush">
-                    <a id="list_stats" class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Home" asp-action="ViewStats">Overall Stats</a>
-                    <a id="list_friends" class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Home" asp-action="FriendList">Friends</a>
-                    <a id="list_games" class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Home" asp-action="GameList">Games</a>
+                    <a id="list_stats" class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Home" asp-action="ViewStats"><i class="fa-solid fa-chart-column"></i> Overall Stats</a>
+                    <a id="list_friends" class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Home" asp-action="FriendList"><i class="fa-solid fa-users"></i> Friends</a>
+                    <a id="list_games" class="list-group-item list-group-item-action list-group-item-light p-3" asp-area="" asp-controller="Home" asp-action="GameList"><i class="fa-solid fa-gamepad"></i> Games</a>
                 </div>
             </div>
         }
