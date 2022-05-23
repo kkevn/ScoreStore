@@ -1,3 +1,26 @@
-﻿body {
+﻿:root {
+    --color-main: #337051; /* amazon green */
+    --color-dark: #1b1b1e; /* shark gray */
+    --color-light: #e7eae5; /* gray nurse white */
+    --color-accent-dark: #6c7979; /* sirocco gray */
+    --color-accent-light: #7a9998; /* granny smith blue */
+}
+
+body {
     font-family: 'Kanit', sans-serif;
+    background-color: var(--color-dark);
+}
+
+a.sidebar-item {
+    margin-bottom: 1px;
+    background-color: var(--color-accent-light);
+}
+
+div.jumbotron-main {
+    margin-top: 12px;
+    background-color: var(--color-accent-light);
+}
+
+div.jumbotron-sub {
+    border-radius: 12px;
 }
