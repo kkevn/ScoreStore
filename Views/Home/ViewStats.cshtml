@@ -1,25 +1,22 @@
 ﻿@model ScoreStore.Models.ApplicationUser
 
 <div class="row">
-    <div class="col-sm-4">
-        <div id="donut_chart"></div>
+    <div class="col-sm-4 d-flex justify-content-center">
+        <div class="chart-box" id="donut_chart"></div>
     </div>
-    <div class="col-sm-4">
-        <div class="row text-light">
+    <div class="col-sm-4 text-center stats-header">
+        <div class="row text-light jumbotron-main">
             <h3>@Model.Name</h3>
         </div>
-        <div class="row">
-            <div class="col-sm-2 text-light">
-                @ViewBag.Matches matches
-            </div>
-            <div class="col-sm-2 text-light">
-                Add Score
+        <div class="row bg-dark">
+            <div class="col-sm-2 text-light" style="width:100%;padding:24px;">
+                @ViewBag.Matches total matches
             </div>
         </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4 d-flex justify-content-center">
         <!--<img src="Model.Avatar" alt="@Model.Name Avatar" width="256" height="256">-->
-        <img src="~/img/user-icon.png" alt="User Icon" width="256" height="256">
+        <img class="image-cover" src="~/img/user-icon.png" alt="User Icon" width="256" height="256">
     </div>
 </div>
 <div class="row">
