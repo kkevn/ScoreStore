@@ -98,8 +98,7 @@ function drawColumnChartGames() {
         var game = parsed.substring(0, delimIndex);
         var wins = parsed.substring(delimIndex + 1, parsed.length);
 
-        // set alternating color to each bar
-        let color = index++ % 2 == 0 ? '#337051' : '#1b1b1e';
+        let color = index++ % 2 == 0 ? '#337051' : '#1b1b1e';   // set alternating color to each bar
 
         data.addRow([game, parseInt(wins), color]);   // add parsed values to data table
     });
@@ -116,7 +115,7 @@ function drawColumnChartGames() {
             //fill: '#1b1b1e'
             fill: 'transparent'
         },
-        colors: ['#337051', '#1b1b1e'],
+        //colors: ['#337051', '#1b1b1e'],
         chartArea: {
             height: '100%',
             width: '100%',
@@ -132,8 +131,11 @@ function drawColumnChartGames() {
         height: chartHeight,
         vAxis: {
             format: '#',
-            gridlines: {
+            minorGridlines: {
                 color: 'none'
+            },
+            gridlines: {
+                color: '#1b1b1e'
             }
         },
         hAxis: {
@@ -155,7 +157,7 @@ function drawColumnChartUsers() {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'User');
     data.addColumn('number', 'Wins');
-    //data.addColumn({ type: 'string', role: 'style' });
+    data.addColumn({ type: 'string', role: 'style' });
 
     // retrieve win list from view data
     // has format: { Profile = ..., Wins = ... }:{ Profile = ..., Wins = ...}:{etc...}
@@ -176,13 +178,23 @@ function drawColumnChartUsers() {
         var user = parsed.substring(0, delimIndex);
         var wins = parsed.substring(delimIndex + 1, parsed.length);
 
-        data.addRow([user, parseInt(wins)]);   // add parsed values to data table
-        //data.addRow([game, parseInt(wins), 'color: ' + color]);   // add parsed values to data table
+        let color = user == modelName ? '#337051' : '#1b1b1e';   // set main color for current user
+
+        data.addRow([user, parseInt(wins), 'color: ' + color]);   // add parsed values to data table
     });
 
     // set options for this chart
     var options = {
-        title: 'Win Totals',
+        title: 'Win Totals per Friend',
+        titleTextStyle: {
+            color: '#e7eae5',
+            fontSize: 18,
+        },
+        fontName: 'Kanit',
+        backgroundColor: {
+            //fill: '#1b1b1e'
+            fill: 'transparent'
+        },
         chartArea: {
             height: '100%',
             width: '100%',
@@ -197,7 +209,18 @@ function drawColumnChartUsers() {
         //height: '100%',
         height: chartHeight,
         vAxis: {
-            format: '#'
+            format: '#',
+            minorGridlines: {
+                color: 'none'
+            },
+            gridlines: {
+                color: '#1b1b1e'
+            }
+        },
+        hAxis: {
+            gridlines: {
+                color: 'none'
+            }
         }
     };
 
@@ -286,6 +309,10 @@ function drawAreaChart() {
             }
         },
         vAxis: {
+            title: 'Wins',
+            titleTextStyle: {
+                color: '#333'
+            },
             format: '#',
             minValue: 0,
             gridlines: {
