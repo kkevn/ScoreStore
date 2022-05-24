@@ -34,11 +34,21 @@ function drawDonutChart() {
     // set options for this chart
     var options = {
         title: 'Win/Loss Ratio',
-        pieHole: 0.5,
-        pieSliceTextStyle: {
-            color: 'black',
+        titleTextStyle: {
+            color: '#e7eae5',
+            fontSize: 18,
         },
+        pieHole: 0.4,
         legend: 'none',
+        backgroundColor: {
+            fill: 'transparent'
+        },
+        pieSliceTextStyle: {
+            color: '#e7eae5'
+        },
+        pieSliceBorderColor: '#7a9998',
+        colors: ['#337051', '#1b1b1e'],
+        fontName: 'Kanit',
         width: 300,
         //width: '100%',
         height: 300,
