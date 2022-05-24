@@ -268,6 +268,7 @@ function drawTimeline() {
     data.addColumn({ type: 'string', id: 'Result' });
     data.addColumn({ type: 'string', id: 'dummy bar tooltip' });
     data.addColumn({ type: 'string', role: 'tooltip' });
+    data.addColumn({ type: 'string', role: 'style' });
     data.addColumn({ type: 'date', id: 'Start' });
     data.addColumn({ type: 'date', id: 'End' });
 
@@ -285,8 +286,11 @@ function drawTimeline() {
         //let result = streakList[i] == "@Model.Name" ? 'Win' : 'Loss';
         let result = streakList[i] == modelName ? 'Win' : 'Loss';
 
+        // specify color for this data entry based on result
+        let color = result == 'Win' ? '#337051' : '#1b1b1e';
+
         // add a row to the data table with current status
-        data.addRow([result, null, result, new Date(i, 0, 0), new Date(i + 1, 0, 0)]);
+        data.addRow([result, null, result, color, new Date(i, 0, 0), new Date(i + 1, 0, 0)]);
     }
 
     // set options for this chart
@@ -304,9 +308,17 @@ function drawTimeline() {
         timeline: {
             groupByRowLabel: true,
             showRowLabels: true,
-            showBarLabels: false
+            showBarLabels: false,
+            rowLabelStyle: {
+                fontSize: 16,
+                color: '#e7eae5'
+            }
         },
-        avoidOverlappingGridLines: false,
+        //avoidOverlappingGridLines: false,
+        fontName: 'Kanit',
+        backgroundColor: {
+            fill: '#7a9998'
+        },
         hAxis: {
             format: " "
         }
