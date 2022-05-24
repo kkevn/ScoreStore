@@ -75,6 +75,7 @@ function drawColumnChartGames() {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Game');
     data.addColumn('number', 'Wins');
+    data.addColumn({ type: 'string', role: 'style' });
 
     // retrieve win list from view data
     // has format: { GameName = ..., GameWins = ... }:{ GameName = ..., GameWins = ...}:{etc...}
@@ -82,6 +83,7 @@ function drawColumnChartGames() {
     var input = columnInput;
 
     // add row to data table for each element in the split input
+    let index = 0;
     input.split(':').forEach(function (s) {
 
         // parse current string by removing unnecessary characters, ex:
@@ -96,12 +98,25 @@ function drawColumnChartGames() {
         var game = parsed.substring(0, delimIndex);
         var wins = parsed.substring(delimIndex + 1, parsed.length);
 
-        data.addRow([game, parseInt(wins)]);   // add parsed values to data table
+        // set alternating color to each bar
+        let color = index++ % 2 == 0 ? '#337051' : '#1b1b1e';
+
+        data.addRow([game, parseInt(wins), color]);   // add parsed values to data table
     });
 
     // set options for this chart
     var options = {
-        title: 'Win Totals',
+        title: 'Win Totals per Game',
+        titleTextStyle: {
+            color: '#e7eae5',
+            fontSize: 18,
+        },
+        fontName: 'Kanit',
+        backgroundColor: {
+            //fill: '#1b1b1e'
+            fill: 'transparent'
+        },
+        colors: ['#337051', '#1b1b1e'],
         chartArea: {
             height: '100%',
             width: '100%',
@@ -116,7 +131,15 @@ function drawColumnChartGames() {
         //height: '100%',
         height: chartHeight,
         vAxis: {
-            format: '#'
+            format: '#',
+            gridlines: {
+                color: 'none'
+            }
+        },
+        hAxis: {
+            gridlines: {
+                color: 'none'
+            }
         }
     };
 
@@ -132,6 +155,7 @@ function drawColumnChartUsers() {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'User');
     data.addColumn('number', 'Wins');
+    //data.addColumn({ type: 'string', role: 'style' });
 
     // retrieve win list from view data
     // has format: { Profile = ..., Wins = ... }:{ Profile = ..., Wins = ...}:{etc...}
@@ -153,6 +177,7 @@ function drawColumnChartUsers() {
         var wins = parsed.substring(delimIndex + 1, parsed.length);
 
         data.addRow([user, parseInt(wins)]);   // add parsed values to data table
+        //data.addRow([game, parseInt(wins), 'color: ' + color]);   // add parsed values to data table
     });
 
     // set options for this chart
@@ -226,15 +251,25 @@ function drawAreaChart() {
 
     // set options for this chart
     var options = {
-        title: 'Win Streaks',
-        chartArea: {
-            height: '100%',
-            width: '100%',
-            top: 48,
-            left: 48,
-            right: 16,
-            bottom: 48
+        title: 'Win Streaks vs. Friends',
+        titleTextStyle: {
+            color: '#e7eae5',
+            fontSize: 18,
         },
+        fontName: 'Kanit',
+        backgroundColor: {
+            //fill: '#1b1b1e'
+            fill: 'transparent'
+        },
+        //colors: ['#337051', '#1b1b1e'],
+        /*chartArea: {
+            height: '75%',
+            width: '75%',
+            //top: 48,
+            left: 48,
+            //right: 16,
+            //bottom: 48
+        },*/
         width: '100%',
         //width: 800,
         //height: '100%',
@@ -245,11 +280,17 @@ function drawAreaChart() {
             titleTextStyle: {
                 color: '#333'
             },
-            textPosition: 'none'
+            textPosition: 'none',
+            gridlines: {
+                color: 'none'
+            }
         },
         vAxis: {
             format: '#',
-            minValue: 0
+            minValue: 0,
+            gridlines: {
+                color: 'none'
+            }
         }
     };
 

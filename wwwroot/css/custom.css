@@ -45,3 +45,10 @@ div.chart-box {
     margin-top: 12px;
     background-color: var(--color-accent-light);
 }
+
+div.chart-box-2 {
+    border-radius: 12px;
+    margin-left: 1px;
+    margin-right: 1px;
+    background-color: var(--color-accent-light);
+}
