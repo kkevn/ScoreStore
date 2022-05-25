@@ -9,11 +9,11 @@
             <h3>@ViewBag.Title</h3>
         </div>
         <div class="row bg-dark">
-            <div class="col-sm-2 text-light" style="width:100%;padding:24px;">
+            <div class="col-sm-2 text-light" style="width:50%;padding:24px;">
                 @ViewBag.Matches matches
             </div>
-            <div class="col-sm-2">
-                <a asp-action="AddScore" asp-route-id="@Model.GameId">Add Score</a>
+            <div class="col-sm-2" style="width:50%;padding:24px;">
+                <a class="btn btn-primary btn-sm" role="button" asp-action="AddScore" asp-route-id="@Model.GameId">Add Score</a>
             </div>
         </div>
     </div>
