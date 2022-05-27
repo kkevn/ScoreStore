@@ -1,12 +1,16 @@
 ﻿@model List<(string Id, string Name, string NormalizedEmail, double Ratio, int Matches, int Games)>
 
-<p>
-    <a asp-action="SearchUsers">Add New</a>
+<p style="margin-top:18px;margin-left:18px;">
+    <a class="btn btn-primary btn-sm" role="button" asp-action="SearchUsers">Find Friends
+        <i class="fa-solid fa-magnifying-glass icon-add"></i>
+    </a>
 </p>
+
+<hr>
 
 @foreach (var item in Model)
 {
-    <div class="row list-item bg-dark text-light">
+    <div class="row list-item bg-dark text-light" onClick="ViewFriendStats('@item.Id')">
         <div class="col-sm-2 d-flex justify-content-center list-item-img">
             <img class="list-item-img" src="~/img/user-icon.png" alt="User Icon">
         </div>
@@ -16,7 +20,7 @@
                     <h3 style="margin-top:4px;">@Html.DisplayFor(modelItem => item.Name)</h3>
                 </div>
                 <div class="col-sm-4 text-right">
-                    <i class="fa-solid fa-xmark fa-2x icon-remove" onClick="ConfirmFriendRemoval('@item.Name', '@item.Id')"></i>
+                    <i class="fa-solid fa-xmark fa-2x icon-remove" onClick="event.stopPropagation();ConfirmFriendRemoval('@item.Name', '@item.Id')"></i>
                 </div>
             </div>
             <div class="row text-center" style="margin-top:16px;">

@@ -118,6 +118,7 @@ img.list-item-img {
 div.list-item-title {
     background-color: var(--color-accent-light);
     border-radius: 0px 12px 0px 0px;
+    margin-left: -8px;
 }
 
 div.list-item-detail {
@@ -142,4 +143,9 @@ i.icon-remove:hover {
 
 i.icon-view {
     color: var(--color-main);
+}
+
+i.icon-add {
+    margin-top: 4px;
+    margin-left: 4px;
 }
