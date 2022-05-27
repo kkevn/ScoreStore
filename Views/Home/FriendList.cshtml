@@ -68,7 +68,7 @@
      */
     function ViewFriendStats(id) {
 
-        // call asp action from controller to remove specified friend (and clear ambient routing value)
+        // call asp action from controller to view specified friend (and clear ambient routing value)
         window.location.href = '@Url.Action("ViewFriend", "Home", new { id = "" })/' + id;
     }
 
