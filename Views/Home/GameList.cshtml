@@ -1,8 +1,13 @@
 ﻿@model List<(int Id, string ImageURL, string Title, double Ratio, int Matches)>
 
-<p>
-    <a asp-controller="Games" asp-action="Index">Add Game</a>
+<p style="margin-top:18px;margin-left:18px;">
+    <a class="btn btn-primary btn-sm" role="button" asp-controller="Games" asp-action="Index">
+        Add Game
+        <i class="fa-solid fa-plus icon-add"></i>
+    </a>
 </p>
+
+<hr>
 
 @foreach (var item in Model)
 {
