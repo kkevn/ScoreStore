@@ -11,7 +11,7 @@
 
 @foreach (var item in Model)
 {
-    <div class="row list-item bg-dark text-light" onClick="ViewFriendStats('@item.Id')">
+    <div class="row list-item bg-dark text-light" onClick="ViewGameStats('@item.Id')">
         <div class="col-sm-2 d-flex justify-content-center list-item-img">
             <img class="list-item-img" src="@item.ImageURL" alt="@item.Title Cover Art ">
         </div>
@@ -50,6 +50,15 @@
 }
 
 <script type="text/javascript">
+    /**
+     * Redirects the user to the stats page for this game.
+     */
+    function ViewGameStats(id) {
+
+        // call asp action from controller to view specified game (and clear ambient routing value)
+        window.location.href = '@Url.Action("ViewGame", "Home", new { id = "" })/' + id;
+    }
+
     /**
      * Prompts a dialog to the user for confirming removal of the specified game
      * from their game list.
