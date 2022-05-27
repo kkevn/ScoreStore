@@ -1,7 +1,8 @@
 ﻿@model List<(string Id, string Name, string NormalizedEmail, double Ratio, int Matches, int Games)>
 
 <p style="margin-top:18px;margin-left:18px;">
-    <a class="btn btn-primary btn-sm" role="button" asp-action="SearchUsers">Find Friends
+    <a class="btn btn-primary btn-sm" role="button" asp-action="SearchUsers">
+        Find Friends
         <i class="fa-solid fa-magnifying-glass icon-add"></i>
     </a>
 </p>
@@ -44,19 +45,19 @@
                 @if (item.Games == 1)
                 {
                     <div class="col-sm-2 list-item-detail">
-                        @Html.DisplayFor(modelItem => item.Games) game
+                        plays @Html.DisplayFor(modelItem => item.Games) game
                     </div>
                 }
                 else
                 {
                     <div class="col-sm-2 list-item-detail">
-                        @Html.DisplayFor(modelItem => item.Games) games
+                        plays @Html.DisplayFor(modelItem => item.Games) games
                     </div>
                 }
                 <div class="col-sm-1 text-right">
                     <i class="fa-solid fa-angles-right fa-2x icon-view"></i>
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
 }
