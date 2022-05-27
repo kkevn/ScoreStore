@@ -87,3 +87,59 @@ div.chart-timeline {
     max-height: 100px;
     margin-top: 18px;
 }
+
+/* list item classes */
+
+div.list-item {
+    border-radius: 12px 12px 0px 12px;
+    margin: 12px 24px 24px 24px;
+    border: 2px solid var(--color-dark);
+}
+
+.list-item:hover {
+    /*opacity: 0.75;
+    background-color: var(--color-light);*/
+    border: 2px solid var(--color-light);
+    cursor: pointer;
+}
+
+div.list-item-img {
+    background-color: var(--color-accent-light);
+    border-radius: 12px 0px 0px 12px;
+}
+
+img.list-item-img {
+    background-color: var(--color-accent-light);
+    width: 100px;
+    height: 100px;
+    padding: 4px;
+}
+
+div.list-item-title {
+    background-color: var(--color-accent-light);
+    border-radius: 0px 12px 0px 0px;
+}
+
+div.list-item-detail {
+    font-style: italic;
+}
+
+div.test-class {
+    display: flex;
+    align-items: center;
+}
+
+i.icon-remove {
+    background-color: var(--color-accent-light);
+    color: darkred;
+    margin-top: 4px;
+}
+
+i.icon-remove:hover {
+    color: red;
+    cursor: pointer;
+}
+
+i.icon-view {
+    color: var(--color-main);
+}

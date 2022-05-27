@@ -3,79 +3,59 @@
 <p>
     <a asp-action="SearchUsers">Add New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Id
-            </th>
-            <th>
-                User
-            </th>
-            <th>
-                Win/Loss Ratio
-            </th>
-            <th>
-                Games Played
-            </th>
-            <th>
-                Game Library
-            </th>
-            <th>
-                Email
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ratio)%
-            </td>
-            @if (item.Matches == 1)
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.Matches) match
-                </td>
-            }
-            else
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.Matches) matches
-                </td>
-            }
-            @if (item.Games == 1)
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.Games) game
-                </td>
-            }
-            else
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.Games) games
-                </td>
-            }
-            <td>
-                @Html.DisplayFor(modelItem => item.NormalizedEmail)
-            </td>
-            <td>
-                <!--<a asp-action="RemoveFriend" asp-route-id="@item.Id">Remove</a>-->
-                <a asp-action="ViewFriend" asp-route-id="@item.Id">View Scores</a>
-                <!--<button onClick="ViewFriendStats('@item.Id')">View Scores</button>-->
-                <button onClick="ConfirmFriendRemoval('@item.Name', '@item.Id')">Remove</button>
-            </td>
-        </tr>
+
+@foreach (var item in Model)
+{
+    <div class="row list-item bg-dark text-light">
+        <div class="col-sm-2 d-flex justify-content-center list-item-img">
+            <img class="list-item-img" src="~/img/user-icon.png" alt="User Icon">
+        </div>
+        <div class="col-sm-10">
+            <div class="row list-item-title">
+                <div class="col-sm-8">
+                    <h3 style="margin-top:4px;">@Html.DisplayFor(modelItem => item.Name)</h3>
+                </div>
+                <div class="col-sm-4 text-right">
+                    <i class="fa-solid fa-xmark fa-2x icon-remove" onClick="ConfirmFriendRemoval('@item.Name', '@item.Id')"></i>
+                </div>
+            </div>
+            <div class="row text-center" style="margin-top:16px;">
+                <div class="col-sm-2 list-item-detail">
+                    @Html.DisplayFor(modelItem => item.Ratio)% winrate
+                </div>
+                <div class="col-sm-1">|</div>
+                @if (item.Matches == 1)
+                {
+                    <div class="col-sm-2 list-item-detail">
+                        @Html.DisplayFor(modelItem => item.Matches) match
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-2 list-item-detail">
+                        @Html.DisplayFor(modelItem => item.Matches) matches
+                    </div>
+                }
+                <div class="col-sm-1">|</div>
+                @if (item.Games == 1)
+                {
+                    <div class="col-sm-2 list-item-detail">
+                        @Html.DisplayFor(modelItem => item.Games) game
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-2 list-item-detail">
+                        @Html.DisplayFor(modelItem => item.Games) games
+                    </div>
+                }
+                <div class="col-sm-1 text-right">
+                    <i class="fa-solid fa-angles-right fa-2x icon-view"></i>
+                </div>
+            </div> 
+        </div>
+    </div>
 }
-    </tbody>
-</table>
 
 <script type="text/javascript">
     /**
