@@ -109,10 +109,11 @@ div.list-item-img {
 }
 
 img.list-item-img {
-    background-color: var(--color-accent-light);
-    width: 100px;
+    background-color: var(--color-dark);
+    border-radius: 12px;
+    width: 133px;
     height: 100px;
-    padding: 4px;
+    padding: 1px;
 }
 
 div.list-item-title {
