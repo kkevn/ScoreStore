@@ -142,6 +142,12 @@ i.icon-remove:hover {
     cursor: pointer;
 }
 
+i.icon-add-item {
+    background-color: var(--color-accent-light);
+    color: var(--color-main);
+    margin-top: 4px;
+}
+
 i.icon-view {
     color: var(--color-main);
 }
