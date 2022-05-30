@@ -64,19 +64,6 @@ namespace ScoreStore.Controllers
 
         /**** FriendList Functions ****/
 
-        public IActionResult SearchUsers()
-        {
-            // redirect user to log in if not already signed in
-            if (_userManager.GetUserId(HttpContext.User) == null)
-            {
-                return RedirectToPage("/Account/Login", new { area = "Identity" });
-            }
-            else
-            {
-                return View();
-            }
-        }
-
         public IActionResult SearchUsersResults(String SearchInput)
         {
             // obtain reference to currently logged in user by Id
