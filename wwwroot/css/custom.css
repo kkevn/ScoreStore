@@ -160,3 +160,12 @@ i.icon-add {
 i.icon-radio {
     margin-left: 4px;
 }
+
+img.image-preview {
+    border-radius: 12px;
+    background-color: var(--color-dark);
+    border: 6px solid var(--color-dark);
+    margin-top: 18px;
+    width: 260px;
+    height: 200px;
+}
