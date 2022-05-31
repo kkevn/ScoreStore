@@ -59,3 +59,22 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script type="text/javascript">
+
+    // obtain reference to image URL input field
+    const input = document.getElementById('input_image_cover');
+
+    // add listener to obtained input field
+    input.addEventListener('input', UpdateImagePreview);
+
+    /**
+     * Updates the <img> preview source to whatever input the user supplied in
+     * the URL input field.
+     */
+    function UpdateImagePreview(e) {
+
+        // update image preview
+        document.getElementById('img_game_art').src = e.target.value;
+    }
+</script>
