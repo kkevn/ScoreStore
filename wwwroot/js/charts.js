@@ -26,8 +26,10 @@ function drawDonutChart() {
     var data = google.visualization.arrayToDataTable([
         ['Result', 'Count'],
         //['Wins', parseInt(@(ViewBag.Wins))],
-        ['Wins', parseInt(ratioWins)],
-        ['Losses', parseInt(ratioLosses)],
+        //['Wins', parseInt(ratioWins)],
+        ['Wins', 0.0],
+        //['Losses', parseInt(ratioLosses)],
+        ['Losses', 100.0],
         //['Losses', parseInt(@(ViewBag.Losses))],
         ]);
 
@@ -60,12 +62,40 @@ function drawDonutChart() {
             left: 48,
             right: 16,
             bottom: 48
-        },
+        }
     };
 
     // instantiate and draw the chart
     var chart = new google.visualization.PieChart(document.getElementById('donut_chart'));
     chart.draw(data, options);
+
+    // animate pie chart if any stats exist
+    if (ratioWins + ratioLosses > 0) {
+        
+        var currentPercentage = 0;    // intialize current percentage value
+
+        var speed = 25;     // time (in milliseconds) between each update
+
+        var ratio = parseInt(ratioWins) / (parseInt(ratioWins) + parseInt(ratioLosses)) * 100;  // calculate win/loss ratio
+
+        // start the animation loop
+        var handler = setInterval(function () {
+
+            // increment the current percentage value this iteration
+            currentPercentage++;
+
+            // update pie chart values for current frame
+            data.setValue(0, 1, currentPercentage);
+            data.setValue(1, 1, 100 - currentPercentage);
+
+            // redraw the pie chart with these values
+            chart.draw(data, options);
+
+            // stop if the ratio value has been reached
+            if (currentPercentage >= ratio)
+                clearInterval(handler);
+        }, speed);
+    }
 }
 
 // render the win totals column chart
@@ -142,6 +172,11 @@ function drawColumnChartGames() {
             gridlines: {
                 color: 'none'
             }
+        },
+        animation: {
+            duration: 1000,
+            easing: 'out',
+            startup: true
         }
     };
 
@@ -221,6 +256,11 @@ function drawColumnChartUsers() {
             gridlines: {
                 color: 'none'
             }
+        },
+        animation: {
+            duration: 1000,
+            easing: 'out',
+            startup: true
         }
     };
 
@@ -318,6 +358,11 @@ function drawAreaChart() {
             gridlines: {
                 color: 'none'
             }
+        },
+        animation: {
+            duration: 1000,
+            easing: 'out',
+            startup: true
         }
     };
 
