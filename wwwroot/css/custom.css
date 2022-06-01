@@ -37,6 +37,12 @@ body {
   border-color: #004a1a;
 }
 
+/* override bootstrap nav-pill active color */
+
+.nav-pills .nav-link.active {
+    background-color: var(--color-main) !important;
+}
+
 /* set custom classes */
 a.sidebar-item {
     margin-bottom: 1px;
@@ -157,9 +163,13 @@ i.icon-add {
     margin-left: 4px;
 }
 
+/* Add Score classes */
+
 i.icon-radio {
     margin-left: 4px;
 }
+
+/* New Game classes */
 
 img.image-preview {
     border-radius: 12px;
