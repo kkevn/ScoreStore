@@ -1,0 +1,91 @@
+﻿@model List<(string Id, string Name, string NormalizedEmail, double Ratio, int Matches, int Games)>
+
+<p style="margin-top:18px;margin-left:18px;">
+    <a class="btn btn-primary btn-sm" role="button" asp-action="SearchUsersResults">
+        Add Friend
+        <i class="fa-solid fa-plus icon-add"></i>
+    </a>
+</p>
+
+<hr>
+
+@foreach (var item in Model)
+{
+    <div class="row list-item bg-dark text-light" onClick="ViewFriendStats('@item.Id')">
+        <div class="col-sm-2 d-flex justify-content-center list-item-img">
+            <img class="list-item-img" src="~/img/user-icon.png" alt="User Icon">
+        </div>
+        <div class="col-sm-10">
+            <div class="row list-item-title">
+                <div class="col-sm-8">
+                    <h3 style="margin-top:4px;">@Html.DisplayFor(modelItem => item.Name)</h3>
+                </div>
+                <div class="col-sm-4 text-right">
+                    <i class="fa-solid fa-xmark fa-2x icon-remove" onClick="event.stopPropagation();ConfirmFriendRemoval('@item.Name', '@item.Id')"></i>
+                </div>
+            </div>
+            <div class="row text-center" style="margin-top:16px;">
+                <div class="col-sm-2 list-item-detail">
+                    @Html.DisplayFor(modelItem => item.Ratio)% winrate
+                </div>
+                <div class="col-sm-1">|</div>
+                @if (item.Matches == 1)
+                {
+                    <div class="col-sm-2 list-item-detail">
+                        @Html.DisplayFor(modelItem => item.Matches) match
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-2 list-item-detail">
+                        @Html.DisplayFor(modelItem => item.Matches) matches
+                    </div>
+                }
+                <div class="col-sm-1">|</div>
+                @if (item.Games == 1)
+                {
+                    <div class="col-sm-2 list-item-detail">
+                        plays @Html.DisplayFor(modelItem => item.Games) game
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-2 list-item-detail">
+                        plays @Html.DisplayFor(modelItem => item.Games) games
+                    </div>
+                }
+                <div class="col-sm-1 text-right">
+                    <i class="fa-solid fa-angles-right fa-2x icon-view"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    /**
+     * Redirects the user to the overall stats page for this friend.
+     */
+    function ViewFriendStats(id) {
+
+        // call asp action from controller to view specified friend (and clear ambient routing value)
+        window.location.href = '@Url.Action("ViewFriend", "Home", new { id = "" })/' + id;
+    }
+
+    /**
+     * Prompts a dialog to the user for confirming removal of the specified friend
+     * from their friend list.
+     */
+    function ConfirmFriendRemoval(friend, id) {
+
+        // dialog message to display
+        let msg = "Are you sure you want to remove '" + friend + "' from your friend list?";
+
+        // prompt dialog to confirm removal of specified friend
+        if (confirm(msg) == true) {
+
+            // call asp action from controller to remove specified friend (and clear ambient routing value)
+            window.location.href = '@Url.Action("RemoveFriend", "Home", new { id = "" })/' + id;
+        }
+    }
+</script>

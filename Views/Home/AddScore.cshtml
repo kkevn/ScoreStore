@@ -1,0 +1,122 @@
+﻿@model IEnumerable<ScoreStore.Models.ApplicationUser>
+
+<div class="row">
+    <div class="col-sm-12 text-center stats-header">
+        <div class="row text-light jumbotron-main">
+            <h3>Add a Score for '@ViewBag.Title'</h3>
+        </div>
+        <div class="row bg-dark">
+            <div class="col-sm-2 text-light" style="width:100%;padding:24px;">
+                Did you win or lose? If you lost, select the friend that was the better player or choose <i>Other</i> if the winner does not appear in your friend list.
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row chart-box-2 justify-content-center align-items-center text-dark" style="padding:24px;margin:48px;">
+    <div class="col-sm-6 d-flex justify-content-center">
+        <div id="div_winorloss" style="font-size: 24px;">
+            <input onClick="CheckSelection()" class="form-check-input" type="radio" id="rb_win" name="result" value="win" style="margin-top:4px;" checked>
+            <label class="form-check-label" for="rb_win" style="margin-left:12px;margin-bottom:24px;">
+                <b>I won!</b><i class="fa-solid fa-face-smile icon-radio"></i>
+            </label>
+            <br>
+            <input onClick="CheckSelection()" class="form-check-input" type="radio" id="rb_loss" name="result" value="loss">
+            <label class="form-check-label" for="rb_loss" style="margin-left:12px;">
+                <b>I lost...</b><i class="fa-solid fa-face-frown icon-radio"></i>
+            </label>
+            <br>
+        </div>
+    </div>
+    <div class="col-sm-6 d-flex justify-content-center" style="border-left: 2px solid #1b1b1e;">
+        <div id="div_selectfriend">
+            @foreach (var item in Model)
+            {
+                <input class="form-check-input" type="radio" id="@item.Name" name="winner" value="@item.Name" disabled>
+                <label class="form-check-label" for="@item.Name">@item.Name</label><br>
+            }
+            <input class="form-check-input" type="radio" id="{x}" name="winner" value="{x}" disabled>
+            <label class="form-check-label" for="{x}"><i>Other</i></label>
+        </div>
+    </div>
+</div>
+<div class="row text-center">
+    <div class="col-sm-6">
+        <p>
+            <a class="btn btn-danger btn-md" role="button" asp-action="ViewGame" asp-route-id="@ViewBag.GameId">
+                Cancel Score
+            </a>
+        </p>
+    </div>
+    <div class="col-sm-6">
+        <div>
+            <button class="btn btn-primary btn-md" onClick="ConfirmScore()">Submit Score</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    // obtain Id of current game to update score for
+    var gameId = @(ViewBag.GameId);
+
+    /**
+     * Enables or disables the radio buttons of the friend list depending on whether
+     * or not the user has marked that they won or lost this game.
+     * Marking a loss should enable the friend list to then prompt the user to select
+     * the winner of the game. If this user won, the friend list should be disabled.
+     */
+    function CheckSelection() {
+
+        // get reference to radio button specifying if user won
+        var rb_win = document.getElementById("rb_win");
+
+        // get reference to all radio button inputs in the populated friend list
+        var rb_friends = document.getElementById("div_selectfriend").getElementsByTagName("input");
+
+        // only enable friend list radio buttons if user did not mark that they won
+        for (let i = 0; i < rb_friends.length; i++) {
+            rb_friends[i].disabled = rb_win.checked;
+        }
+    }
+
+    /**
+     * Submits the score selection of who won this particular game and returns the
+     * user to the ViewGame page for this game.
+     * Will alert the user if no friend was selected as the winner if the user
+     * marked themselves as the loser.
+     * Uses Id routing value to specify who won:
+     *  {0}: current user won
+     *  {rb_friends[i].value}: user Id of friend that won
+     *  {x}: user not currently in friend list that won
+     */
+    function ConfirmScore() {
+
+        // user marked themselves as the winner
+        if (document.getElementById("rb_win").checked) {
+
+            // call asp action from controller to submit user as winner for this score
+            window.location.href = '@Url.Action("SubmitScore", "Home")?game=' + gameId + '&name={0}';
+        } else {
+
+            // create flag for identifying if a winner was selected
+            let winnerSelected = false;
+
+            // get reference to all radio button inputs in the populated friend list
+            var rb_friends = document.getElementById("div_selectfriend").getElementsByTagName("input");
+
+            // search for friend that was marked as winner
+            for (let i = 0; i < rb_friends.length; i++) {
+
+                // if found, call asp action from controller to submit friend as winner for this score
+                if (rb_friends[i].checked) {
+                    window.location.href = '@Url.Action("SubmitScore", "Home")?game=' + gameId + '&name=' + rb_friends[i].value;
+                    winnerSelected = true;
+                }
+            }
+
+            // alerts the user that a winner needs to be selected from the friend list
+            if (!winnerSelected)
+                alert("You must select a user as a winner of this game.");
+        }
+    }
+</script>

@@ -6,47 +6,121 @@
     <title>@ViewData["Title"] - ScoreStore</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/simple-sidebar/css/styles.css" />
+    <link rel="stylesheet" href="~/css/all.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit&display=swap">
+    <link rel="stylesheet" href="~/css/custom.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ScoreStore</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Games" asp-action="Index">Games</a>
-                        </li>
-                    </ul>
+    <div class="d-flex" id="wrapper">
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <!-- Sidebar-->
+            <div class="bg-dark" id="sidebar-wrapper">
+                <a style="text-decoration: none;" asp-area="" asp-controller="Home" asp-action="Index">
+                    <div class="sidebar-heading border-bottom text-light bg-dark">ScoreStore</div>
+                </a>
+                <div class="list-group list-group-flush">
+                    <a id="list_stats" class="sidebar-item list-group-item list-group-item-action list-group-item-dark p-3" asp-area="" asp-controller="Home" asp-action="ViewStats"><i class="fa-solid fa-chart-column"></i> Overall Stats</a>
+                    <a id="list_friends" class="sidebar-item list-group-item list-group-item-action list-group-item-dark p-3" asp-area="" asp-controller="Home" asp-action="FriendList"><i class="fa-solid fa-users"></i> Friends</a>
+                    <a id="list_games" class="sidebar-item list-group-item list-group-item-action list-group-item-dark p-3" asp-area="" asp-controller="Home" asp-action="GameList"><i class="fa-solid fa-gamepad"></i> Games</a>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        }
+
+        <!-- Page content wrapper-->
+        <div id="page-content-wrapper">
+
+            <!-- Top navigation-->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <a style="text-decoration: none;" asp-area="" asp-controller="Home" asp-action="Index">
+                            <div class="sidebar-heading text-light bg-dark">ScoreStore</div>
+                        </a>
+                    }
+                    <button class="btn btn-primary" id="sidebarToggle" style="display: none;">Toggle Menu</button>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                            <!--<li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="UserInfo">User Info</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Games" asp-action="Index">Games</a>
+                            </li>-->
+                            <partial name="_LoginPartial" />
+                        </ul>
+
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Page content-->
+            <div class="container-fluid">
+                <main role="main" class="pb-3 text-light">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <!-- Footer -->
+    <footer class="footer text-muted">
         <div class="container">
-            &copy; 2021 - ScoreStore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2021 - ScoreStore - <a asp-area="" asp-controller="Home" asp-action="Index">Home</a> - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> - <a href="https://github.com/kkevn/ScoreStore">GitHub</a> - <a asp-area="" asp-controller="Home" asp-action="ReportIssue">Report an Issue</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/simple-sidebar/js/scripts.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
+    <script type="text/javascript">
+
+        // get current page path name
+        var url = window.location.pathname;
+        var currentPage = url.substring(url.indexOf('/') + 1);
+
+        // get references to each sidebar list-group-item
+        var list_stats = document.getElementById("list_stats");
+        var list_friends = document.getElementById("list_friends");
+        var list_games = document.getElementById("list_games");
+
+        // set respective list-group-item to active based on current page
+        if (currentPage.includes("Home/ViewStats")) {
+            list_stats.classList.add("active");
+            list_friends.classList.remove("active");
+            list_games.classList.remove("active");
+        } else if (currentPage.includes("Home/FriendList") ||
+            currentPage.includes("Home/ViewFriend") ||
+            currentPage.includes("Home/SearchUsers")) {
+            list_stats.classList.remove("active");
+            list_friends.classList.add("active");
+            list_games.classList.remove("active");
+        } else if (currentPage.includes("Home/GameList") ||
+            currentPage.includes("Home/ViewGame") ||
+            currentPage.includes("Home/AddScore") ||
+            currentPage.includes("Games") ||
+            currentPage.includes("Games/Create")) {
+            list_stats.classList.remove("active");
+            list_friends.classList.remove("active");
+            list_games.classList.add("active");
+        } else {
+            list_stats.classList.remove("active");
+            list_friends.classList.remove("active");
+            list_games.classList.remove("active");
+        }
+    </script>
 </body>
 </html>

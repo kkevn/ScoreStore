@@ -1,0 +1,55 @@
+﻿@model ScoreStore.Models.Scores
+
+<div class="row">
+    <div class="col-sm-4 d-flex justify-content-center">
+        <div class="chart-box" id="donut_chart"></div>
+    </div>
+    <div class="col-sm-4 text-center stats-header">
+        <div class="row text-light jumbotron-main">
+            <h3>@ViewBag.Title</h3>
+        </div>
+        <div class="row bg-dark">
+            <div class="col-sm-2 text-light" style="width:50%;padding:24px;">
+                @ViewBag.Matches matches
+            </div>
+            <div class="col-sm-2" style="width:50%;padding:24px;">
+                <a class="btn btn-primary btn-sm" role="button" asp-action="AddScore" asp-route-id="@Model.GameId">Add Score</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 d-flex justify-content-center">
+        <img class="image-cover" src="@ViewBag.ImageURL" alt="@ViewBag.Title Cover">
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 chart-timeline">
+        <div id="timeline"></div>
+    </div>
+</div>
+<div class="row chart-box-2">
+    <div class="col-sm-6">
+        <div id="area_chart"></div>
+    </div>
+    <div class="col-sm-6">
+        <div id="column_chart_users"></div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+        // fetch 'wins' and 'losses' Model properties for donut chart win loss ratio
+        var ratioWins = @Model.Wins;
+        var ratioLosses = @Model.Losses;
+
+        // fetch ViewData input for column chart wins per game
+        var columnInput = "@ViewData["columns"]";
+
+        // fetch 'streaklist' Model property for area and timeline charts
+        var modelStreakList = "@Model.StreakList";
+
+        // fetch ViewBag input for unique name of current user
+        var modelName = "@(ViewBag.ProfileName)";
+
+</script>
+<script type="text/javascript" src="~/js/charts.js"></script>

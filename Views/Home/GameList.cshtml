@@ -1,0 +1,79 @@
+﻿@model List<(int Id, string ImageURL, string Title, double Ratio, int Matches)>
+
+<p style="margin-top:18px;margin-left:18px;">
+    <a class="btn btn-primary btn-sm" role="button" asp-controller="Games" asp-action="Index">
+        Add Game
+        <i class="fa-solid fa-plus icon-add"></i>
+    </a>
+</p>
+
+<hr>
+
+@foreach (var item in Model)
+{
+    <div class="row list-item bg-dark text-light" onClick="ViewGameStats('@item.Id')">
+        <div class="col-sm-2 d-flex justify-content-center list-item-img">
+            <img class="list-item-img" src="@item.ImageURL" alt="@item.Title Cover Art ">
+        </div>
+        <div class="col-sm-10">
+            <div class="row list-item-title">
+                <div class="col-sm-8">
+                    <h3 style="margin-top:4px;">@Html.DisplayFor(modelItem => item.Title)</h3>
+                </div>
+                <div class="col-sm-4 text-right">
+                    <i class="fa-solid fa-xmark fa-2x icon-remove" onClick="event.stopPropagation();ConfirmGameRemoval('@item.Title', '@item.Id')"></i>
+                </div>
+            </div>
+            <div class="row text-center" style="margin-top:16px;">
+                <div class="col-sm-3 list-item-detail">
+                    @Html.DisplayFor(modelItem => item.Ratio)% winrate
+                </div>
+                <div class="col-sm-2">|</div>
+                @if (item.Matches == 1)
+                {
+                    <div class="col-sm-3 list-item-detail">
+                        @Html.DisplayFor(modelItem => item.Matches) match
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-3 list-item-detail">
+                        @Html.DisplayFor(modelItem => item.Matches) matches
+                    </div>
+                }
+                <div class="col-sm-1 text-right">
+                    <i class="fa-solid fa-angles-right fa-2x icon-view"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    /**
+     * Redirects the user to the stats page for this game.
+     */
+    function ViewGameStats(id) {
+
+        // call asp action from controller to view specified game (and clear ambient routing value)
+        window.location.href = '@Url.Action("ViewGame", "Home", new { id = "" })/' + id;
+    }
+
+    /**
+     * Prompts a dialog to the user for confirming removal of the specified game
+     * from their game list.
+     */
+    function ConfirmGameRemoval(title, id) {
+
+        // dialog message to display
+        let msg = "Are you sure you want to remove '" + title + "' from your game list?";
+        let note = "Scores for this game will not be deleted should you choose to add it back later.";
+
+        // prompt dialog to confirm removal of specified game
+        if (confirm(msg + "\n\n" + note) == true) {
+
+            // call asp action from controller to remove specified game (and clear ambient routing value)
+            window.location.href = '@Url.Action("RemoveGame", "Home", new { id = "" })/' + id;
+        }
+    }
+</script>

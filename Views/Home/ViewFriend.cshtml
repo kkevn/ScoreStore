@@ -1,0 +1,53 @@
+﻿@model ScoreStore.Models.ApplicationUser
+
+<div class="row">
+    <div class="col-sm-4 d-flex justify-content-center">
+        <div class="chart-box" id="donut_chart"></div>
+    </div>
+    <div class="col-sm-4 text-center stats-header">
+        <div class="row text-light jumbotron-main">
+            <h3>@Model.Name</h3>
+        </div>
+        <div class="row bg-dark">
+            <div class="col-sm-2 text-light" style="width:100%;padding:24px;">
+                @ViewBag.Matches total matches
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 d-flex justify-content-center">
+        <!--<img src="Model.Avatar" alt="@Model.Name Avatar" width="256" height="256">-->
+        <img class="image-cover" src="~/img/user-icon.png" alt="User Icon">
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 chart-timeline">
+        <div id="timeline"></div>
+    </div>
+</div>
+<div class="row chart-box-2">
+    <div class="col-sm-6">
+        <div id="area_chart"></div>
+    </div>
+    <div class="col-sm-6">
+        <div id="column_chart_games"></div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+        // fetch ViewBag inputs for donut chart win loss ratio
+        var ratioWins = @(ViewBag.Wins);
+        var ratioLosses = @(ViewBag.Losses);
+
+        // fetch ViewData input for column chart wins per game
+        var columnInput = "@ViewData["columns"]";
+
+        // fetch 'streaklist' Model property for area and timeline charts
+        var modelStreakList = "@Model.StreakList";
+
+        // fetch 'name' Model property for timeline streak list
+        var modelName = "@Model.Name";
+
+</script>
+<script type="text/javascript" src="~/js/charts.js"></script>

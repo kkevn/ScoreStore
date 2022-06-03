@@ -1,0 +1,108 @@
+﻿.quad_container {
+    /*display: grid;*/
+    display: inline-block;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "quad_i_ii quad_i_ii"
+        "quad_iii quad_iv";
+}
+
+.quad_i_ii {
+    display: grid;
+    height: 400px;
+    grid-template-columns: 0.5fr 1.5fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "quad_ii quad_i";
+    grid-area: quad_i_ii;
+    /*border: 1px solid rgba(0, 0, 0, 0.8);*/
+}
+
+.quad_ii {
+    grid-area: quad_ii;
+    place-self: center normal;
+}
+
+.quad_i {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1.2fr 0.8fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "quad_i_a"
+        "quad_i_b";
+    grid-area: quad_i;
+    /*border: 1px solid rgba(0, 0, 255, 0.8);*/
+}
+
+.quad_i_a {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+        "quad_i_a_2 quad_i_a_1"
+        "quad_i_a_3 quad_i_a_1";
+    grid-area: quad_i_a;
+    /*place-self: center start;*/
+    /*border: 1px solid rgba(255, 255, 0, 0.8);*/
+}
+
+.quad_i_a_1 {
+    grid-area: quad_i_a_1;
+    padding: 8px;
+}
+
+.quad_i_a_2 {
+    grid-area: quad_i_a_2;
+    /*margin-block-start: auto;*/
+}
+
+.quad_i_a_3 {
+    grid-area: quad_i_a_3;
+    font-size: 24px;
+    margin-left: 64px;
+}
+
+.quad_i_b {
+    grid-area: quad_i_b;
+    /*border: 1px solid rgba(255, 0, 255, 0.8);*/
+    align-self: end;
+    /*place-self: center normal;*/
+}
+
+.quad_iii {
+    grid-area: quad_iii;
+    /*border: 1px solid rgba(0, 255, 0, 0.8);*/
+    /*place-self: center normal;*/
+}
+
+.quad_iv {
+    grid-area: quad_iv;
+    /*border: 1px solid rgba(255, 0, 0, 0.8);*/
+}
+
+
+
+/*.grid-container {
+        display: grid;
+        grid-template-columns: auto auto;
+        background-color: #2196F3;
+        padding: 10px;
+    }
+
+    .grid-item {
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(0, 0, 0, 0.8);
+        padding: 0px;
+        font-size: 64px;
+        text-align: center;
+        width: 100%;
+        height: 100%;
+    }*/
