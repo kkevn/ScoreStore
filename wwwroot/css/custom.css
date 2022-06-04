@@ -169,6 +169,12 @@ i.icon-radio {
     margin-left: 4px;
 }
 
+img.avatar {
+    margin: 4px;
+    width: 40px;
+    height: 30px;
+}
+
 /* New Game classes */
 
 img.image-preview {
@@ -188,12 +194,12 @@ img.image-preview {
     margin: 4px;
 }
 
-input[type=radio]:checked + label > img {
+input[type=radio]:checked + label > img.avatar-select {
     border: 1px solid var(--color-main);
     box-shadow: 0 0 2px 2px var(--color-main);
 }
 
-input[type=radio] + label > img {
+input[type=radio] + label > img.avatar-select {
     width: 150px;
     height: 150px;
     transition: 100ms all;
