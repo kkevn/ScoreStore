@@ -127,10 +127,10 @@ namespace ScoreStore.Controllers
          * Helper function that returns the current user's friends with their overall scores in the form of a value tuple. Uses the 
          * current user's friend list (in both string and model form) to generate the list of users necessary to output.
          */
-        private List<(string, string, string, double, int, int)> FriendListHelper(string friendList, IQueryable<ApplicationUser> friends)
+        private List<(string, string, string, string, double, int, int)> FriendListHelper(string friendList, IQueryable<ApplicationUser> friends)
         {
-            // trim user's friends to a selection of just Id, profile name, and email
-            var friends_trimmed = friends.Select(f => new { f.Id, f.Name, f.NormalizedEmail });
+            // trim user's friends to a selection of just Id, profile name, avatar, and email
+            var friends_trimmed = friends.Select(f => new { f.Id, f.Name, f.Avatar, f.NormalizedEmail });
 
             // obtain all scores in database
             var scores = _context.Scores;
@@ -156,6 +156,7 @@ namespace ScoreStore.Controllers
                 {
                     Id = sf.Id,
                     Name = sf.Name,
+                    Avatar = sf.Avatar,
                     NormalizedEmail = sf.NormalizedEmail,
                     Ratio = (sg.Wins + sg.Losses > 0) ? Math.Round((double) sg.Wins / (sg.Wins + sg.Losses) * 100, 2) : 0.0,
                     Matches = sg.Wins + sg.Losses,
@@ -178,6 +179,7 @@ namespace ScoreStore.Controllers
                     { 
                         Id = x.FT.Id,
                         Name = x.FT.Name,
+                        Avatar = x.FT.Avatar,
                         NormalizedEmail = x.FT.NormalizedEmail,
                         Ratio = y.Ratio,
                         Matches = y.Matches,
@@ -185,7 +187,7 @@ namespace ScoreStore.Controllers
                     });
 
             // return list of value tuples containing current user's friends and their scores
-            return friends_all.AsEnumerable().Select(f => new ValueTuple<string, string, string, double, int, int>(f.Id, f.Name, f.NormalizedEmail, f.Ratio, f.Matches, f.Games)).ToList();
+            return friends_all.AsEnumerable().Select(f => new ValueTuple<string, string, string, string, double, int, int>(f.Id, f.Name, f.Avatar, f.NormalizedEmail, f.Ratio, f.Matches, f.Games)).ToList();
         }
 
         public async Task<IActionResult> AddFriend()
