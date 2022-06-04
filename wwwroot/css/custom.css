@@ -115,7 +115,7 @@ div.list-item-img {
 }
 
 img.list-item-img {
-    background-color: var(--color-dark);
+    /*background-color: var(--color-dark);*/
     border-radius: 12px;
     width: 133px;
     height: 100px;
