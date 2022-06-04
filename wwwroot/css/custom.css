@@ -179,3 +179,22 @@ img.image-preview {
     width: 260px;
     height: 200px;
 }
+
+/* User Avatar Selection classes */
+
+.input-hidden {
+    position: absolute;
+    left: -9999px;
+    margin: 4px;
+}
+
+input[type=radio]:checked + label > img {
+    border: 1px solid var(--color-main);
+    box-shadow: 0 0 2px 2px var(--color-main);
+}
+
+input[type=radio] + label > img {
+    width: 150px;
+    height: 150px;
+    transition: 100ms all;
+}
