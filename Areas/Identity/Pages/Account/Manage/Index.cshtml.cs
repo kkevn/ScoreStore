@@ -25,6 +25,9 @@ namespace ScoreStore.Areas.Identity.Pages.Account.Manage
 
         public string Username { get; set; }
 
+        [Display(Name = "Avatar Icon")]
+        public string Avatar { get; set; }
+
         [TempData]
         public string StatusMessage { get; set; }
 
@@ -42,9 +45,11 @@ namespace ScoreStore.Areas.Identity.Pages.Account.Manage
         {
             //var userName = await _userManager.GetUserNameAsync(user);
             var userName = user.Name;
+            var userAvatar = user.Avatar;
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
+            Avatar = userAvatar;
 
             Input = new InputModel
             {
