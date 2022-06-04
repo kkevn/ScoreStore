@@ -115,7 +115,7 @@ div.list-item-img {
 }
 
 img.list-item-img {
-    background-color: var(--color-dark);
+    /*background-color: var(--color-dark);*/
     border-radius: 12px;
     width: 133px;
     height: 100px;
@@ -169,6 +169,12 @@ i.icon-radio {
     margin-left: 4px;
 }
 
+img.avatar {
+    margin: 4px;
+    width: 40px;
+    height: 30px;
+}
+
 /* New Game classes */
 
 img.image-preview {
@@ -178,4 +184,31 @@ img.image-preview {
     margin-top: 18px;
     width: 260px;
     height: 200px;
+}
+
+/* User Avatar Selection classes */
+
+.input-hidden {
+    position: absolute;
+    left: -9999px;
+    margin: 4px;
+}
+
+input[type=radio]:checked + label > img.avatar-select {
+    border: 1px solid var(--color-main);
+    box-shadow: 0 0 2px 2px var(--color-main);
+}
+
+input[type=radio] + label > img.avatar-select {
+    width: 150px;
+    height: 150px;
+    transition: 100ms all;
+}
+
+img.avatar-selection {
+    border: 1px solid var(--color-main);
+    width: 150px;
+    height: 150px;
+    margin: 4px;
+    padding: 8px;
 }

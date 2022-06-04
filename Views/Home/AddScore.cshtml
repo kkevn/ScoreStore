@@ -32,7 +32,10 @@
             @foreach (var item in Model)
             {
                 <input class="form-check-input" type="radio" id="@item.Name" name="winner" value="@item.Name" disabled>
-                <label class="form-check-label" for="@item.Name">@item.Name</label><br>
+                <label class="form-check-label" for="@item.Name">
+                    <img class="avatar" src="~/img/user-icons/@item.Avatar" alt="@item.Name's Avatar">
+                    @item.Name
+                </label><br>
             }
             <input class="form-check-input" type="radio" id="{x}" name="winner" value="{x}" disabled>
             <label class="form-check-label" for="{x}"><i>Other</i></label>
