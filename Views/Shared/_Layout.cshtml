@@ -1,5 +1,10 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<ApplicationUser> UserManager
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,6 +23,8 @@
 
         @if (User.Identity.IsAuthenticated)
         {
+            var profileName = (await UserManager.GetUserAsync(User)).Name;
+
             <!-- Sidebar-->
             <div class="bg-dark" id="sidebar-wrapper">
                 <a style="text-decoration: none;" asp-area="" asp-controller="Home" asp-action="Index">
@@ -27,6 +34,10 @@
                     <a id="list_stats" class="sidebar-item list-group-item list-group-item-action list-group-item-dark p-3" asp-area="" asp-controller="Home" asp-action="ViewStats"><i class="fa-solid fa-chart-column"></i> Overall Stats</a>
                     <a id="list_friends" class="sidebar-item list-group-item list-group-item-action list-group-item-dark p-3" asp-area="" asp-controller="Home" asp-action="FriendList"><i class="fa-solid fa-users"></i> Friends</a>
                     <a id="list_games" class="sidebar-item list-group-item list-group-item-action list-group-item-dark p-3" asp-area="" asp-controller="Home" asp-action="GameList"><i class="fa-solid fa-gamepad"></i> Games</a>
+                    @if (profileName.Equals("admin"))
+                    {
+                        <a id="list_admin" class="sidebar-item list-group-item list-group-item-action list-group-item-dark p-3" asp-area="" asp-controller="Home" asp-action="AdminMenu"><i class="fa-solid fa-screwdriver-wrench"></i> Admin Tools</a>
+                    }
                 </div>
             </div>
         }
