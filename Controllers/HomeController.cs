@@ -44,6 +44,32 @@ namespace ScoreStore.Controllers
             return View();
         }
 
+        public IActionResult AdminMenu()
+        {
+            // obtain reference to currently logged in user by Id
+            var userId = _userManager.GetUserId(HttpContext.User);
+            
+            // redirect user to log in if not already signed in
+            if (userId != null)
+            {
+                // get current user object
+                ApplicationUser currentUser = _userManager.FindByIdAsync(userId).Result;
+
+                // allow access if user is the administrator
+                if (currentUser.Name.Equals("admin"))
+                {
+                    return View();
+                } else
+                {
+                    return RedirectToPage("/Account/AccessDenied", new { area = "Identity" });
+                }
+            }
+            else
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+        }
+
         public IActionResult UserInfo()
         {
             // obtain reference to currently logged in user by Id
