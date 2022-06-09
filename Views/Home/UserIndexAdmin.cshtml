@@ -24,7 +24,7 @@
 
 @foreach (var item in Model)
 {
-    <div class="row list-item bg-dark text-light" onClick="ConfirmFriendAddition('@item.Name', '@item.Id')">
+    <div class="row list-item bg-dark text-light" onClick="GotoUserDetails('@item.Id')">
         <div class="col-sm-2 d-flex justify-content-center list-item-img">
             <img class="list-item-img" src="~/img/user-icons/@item.Avatar" alt="@item.Name's Avatar">
         </div>
@@ -33,9 +33,11 @@
                 <div class="col-sm-8">
                     <h3 style="margin-top:4px;">@Html.DisplayFor(modelItem => item.Name)</h3>
                 </div>
+                <!--
                 <div class="col-sm-4 text-right">
                     <i class="fa-solid fa-plus fa-2x icon-add-item"></i>
                 </div>
+                -->
             </div>
             <div class="row text-center" style="margin-top:16px;">
                 <div class="col-sm-3 list-item-detail" style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">
@@ -51,5 +53,13 @@
 }
 
 <script type="text/javascript">
-    
+
+    /**
+     * Redirects admin where the specified user's details can be viewed.
+     */
+    function GotoUserDetails(id) {
+
+        // call asp action from controller to view details for specified user
+        window.location.href = '@Url.Action("UserInfo", "Home")/' + id;
+    }
 </script>

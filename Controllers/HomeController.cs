@@ -65,22 +65,12 @@ namespace ScoreStore.Controllers
             return View(users);
         }
 
-        public IActionResult UserInfo()
+        [Authorize(Policy = "AdminOnly")]
+        public IActionResult UserInfo(String? id)
         {
-            // obtain reference to currently logged in user by Id
-            var userId = _userManager.GetUserId(HttpContext.User);
-
-            // redirect user to log in if not already signed in
-            if (userId == null)
-            {
-                return RedirectToPage("/Account/Login", new { area = "Identity" });
-            }
-            else
-            {
-                // obtain the user with Id and pass to the view
-                ApplicationUser currentUser = _userManager.FindByIdAsync(userId).Result;
-                return View(currentUser);
-            }
+            // obtain the user with Id and pass to the view
+            ApplicationUser currentUser = _userManager.FindByIdAsync(id).Result;
+            return View(currentUser);
         }
 
         /**** FriendList Functions ****/
