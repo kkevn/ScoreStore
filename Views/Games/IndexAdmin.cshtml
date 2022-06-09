@@ -1,0 +1,66 @@
+﻿@model IEnumerable<ScoreStore.Models.Game>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@foreach (var item in Model)
+{
+    <div class="row list-item bg-dark text-light" onClick="GotoGameDetails('@item.Id')">
+        <div class="col-sm-2 d-flex justify-content-center list-item-img">
+            <img class="list-item-img" src="@item.ImageURL" alt="User Icon">
+        </div>
+        <div class="col-sm-10">
+            <div class="row list-item-title">
+                <div class="col-sm-8">
+                    <h3 style="margin-top:4px;">@Html.DisplayFor(modelItem => item.Title)</h3>
+                </div>
+                <div class="col-sm-3 text-right">
+                    <i class="fa-solid fa-pen fa-2x icon-edit" onClick="event.stopPropagation();GotoGameEdit('@item.Id')"></i>
+                </div>
+                <div class="col-sm-1 text-right">
+                    <i class="fa-solid fa-xmark fa-2x icon-remove" onClick="event.stopPropagation();GotoGameDelete('@item.Id')"></i>
+                </div>
+            </div>
+            <div class="row text-center" style="margin-top:16px;">
+                <div class="col-sm-2 list-item-detail">
+                    @Html.DisplayFor(modelItem => item.Id)
+                </div>
+                <div class="col-sm-1">|</div>
+                <div class="col-sm-8 list-item-detail" style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">
+                    @Html.DisplayFor(modelItem => item.ImageURL)
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+
+    /**
+     * Redirects admin where the specified game's details can be viewed.
+     */
+    function GotoGameDetails(id) {
+
+        // call asp action from controller to view details for specified game
+        window.location.href = '@Url.Action("Details", "Games")/' + id;
+    }
+
+    /**
+     * Redirects admin where the specified game can be edited.
+     */
+    function GotoGameEdit(id) {
+
+        // call asp action from controller to edit specified game
+        window.location.href = '@Url.Action("Edit", "Games")/' + id;
+    }
+
+    /**
+     * Redirects admin where the specified game can be deleted.
+     */
+    function GotoGameDelete(id) {
+
+        // call asp action from controller to delete specified game
+        window.location.href = '@Url.Action("Delete", "Games")/' + id;
+    }
+</script>

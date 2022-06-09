@@ -148,6 +148,17 @@ i.icon-remove:hover {
     cursor: pointer;
 }
 
+i.icon-edit {
+    background-color: var(--color-accent-light);
+    color: midnightblue;
+    margin-top: 4px;
+}
+
+i.icon-edit:hover {
+    color: mediumblue;
+    cursor: pointer;
+}
+
 i.icon-add-item {
     background-color: var(--color-accent-light);
     color: var(--color-main);
