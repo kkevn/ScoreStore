@@ -90,6 +90,11 @@ namespace ScoreStore.Areas.Identity.Pages.Account
                 // also adding custom username to ApplicationUser object during registration
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Name = Input.Profile, Avatar = Input.Avatar };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
+                // add claim to user based on whether they are the admin or not
+                var claim = Input.Profile.Equals("admin") ? "admin" : "user";
+                result = await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", claim));
+                
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
