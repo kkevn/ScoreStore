@@ -1,7 +1,35 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Admin Tools";
 }
 
-<h1>Admin Menu</h1>
+<!--based on bootstrap jumbotron example -->
+<div class="jumbotron text-dark jumbotron-main">
+    <div class="container">
+        <h1 class="display-3">Admin Tools</h1>
+        <p>Administrative control panel with read/write access to all crucial data tables that <i>ScoreStore</i> requires for operation. Available only to the administrator account.</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-4 text-light bg-dark jumbotron-sub">
+            <h2>Games</h2>
+            <p>Access the table for the <code>/Models/Game</code> object. Create, read, update and delete commands available.</p>
+            <p><a class="btn btn-secondary" role="button" asp-area="" asp-controller="Games" asp-action="IndexAdmin">View games &raquo;</a></p>
+        </div>
+        <div class="col-md-4 text-light jumbotron-sub">
+            <h2>Scores</h2>
+            <p>Access the table for the <code>/Models/Scores</code> object. Create, read, update and delete commands available.</p>
+            <p><a class="btn btn-secondary" role="button" asp-area="" asp-controller="Scores" asp-action="Index">View scores &raquo;</a></p>
+        </div>
+        <div class="col-md-4 text-light bg-dark jumbotron-sub">
+            <h2>Users</h2>
+            <p>Access the table for the <code>/Models/ApplicationUser</code> object. Read command available.</p>
+            <p><a class="btn btn-secondary" role="button" asp-area="" asp-controller="Home" asp-action="UserIndexAdmin">View users &raquo;</a></p>
+        </div>
+    </div>
+
+    <hr>
+
+</div> <!-- /container -->
