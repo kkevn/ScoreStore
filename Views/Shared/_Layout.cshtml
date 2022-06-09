@@ -109,28 +109,42 @@
         var list_games = document.getElementById("list_games");
 
         // set respective list-group-item to active based on current page
-        if (currentPage.includes("Home/ViewStats")) {
+        if (currentPage.includes("Home/ViewStats")) {           // stats page
             list_stats.classList.add("active");
             list_friends.classList.remove("active");
             list_games.classList.remove("active");
-        } else if (currentPage.includes("Home/FriendList") ||
+            list_admin.classList.remove("active");
+        } else if (currentPage.includes("Home/FriendList") ||   // friends pages
             currentPage.includes("Home/ViewFriend") ||
             currentPage.includes("Home/SearchUsers")) {
             list_stats.classList.remove("active");
             list_friends.classList.add("active");
             list_games.classList.remove("active");
-        } else if (currentPage.includes("Home/GameList") ||
+            list_admin.classList.remove("active");
+        } else if (currentPage.includes("Home/GameList") ||     // games pages
             currentPage.includes("Home/ViewGame") ||
             currentPage.includes("Home/AddScore") ||
-            currentPage.includes("Games") ||
+            currentPage.endsWith("Games") ||
+            currentPage.endsWith("Games/") ||
             currentPage.includes("Games/Create")) {
             list_stats.classList.remove("active");
             list_friends.classList.remove("active");
             list_games.classList.add("active");
+            list_admin.classList.remove("active");
+        } else if (currentPage.includes("Home/AdminMenu") ||    // admin pages
+            currentPage.includes("Games/Delete") ||
+            currentPage.includes("Games/Details") ||
+            currentPage.includes("Games/Edit") ||
+            currentPage.includes("Games/IndexAdmin")) {
+            list_stats.classList.remove("active");
+            list_friends.classList.remove("active");
+            list_games.classList.remove("active");
+            list_admin.classList.add("active");
         } else {
             list_stats.classList.remove("active");
             list_friends.classList.remove("active");
             list_games.classList.remove("active");
+            list_admin.classList.remove("active");
         }
     </script>
 </body>
