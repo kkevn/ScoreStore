@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -26,12 +27,14 @@ namespace ScoreStore.Controllers
         }
 
         // GET: Games
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> IndexAdmin()
         {
             return View(await _context.Game.ToListAsync());
         }
 
         // GET: Games/Details/5
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -72,6 +75,7 @@ namespace ScoreStore.Controllers
         }
 
         // GET: Games/Edit/5
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -92,6 +96,7 @@ namespace ScoreStore.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ImageURL")] Game game)
         {
             if (id != game.Id)
@@ -123,6 +128,7 @@ namespace ScoreStore.Controllers
         }
 
         // GET: Games/Delete/5
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -143,6 +149,7 @@ namespace ScoreStore.Controllers
         // POST: Games/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var game = await _context.Game.FindAsync(id);
