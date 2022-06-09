@@ -51,6 +51,20 @@ namespace ScoreStore.Controllers
             return View();
         }
 
+        [Authorize(Policy = "AdminOnly")]
+        public IActionResult UserIndexAdmin(String SearchInput)
+        {
+            // obtain list of all users in database
+            var users = _userManager.Users;
+
+            // if non-empty input, filter list of users matching search input phrase by containing profile name, email or full user Id
+            if (!String.IsNullOrWhiteSpace(SearchInput))
+                users = users.Where(u => u.Name.Contains(SearchInput) || u.NormalizedEmail.Contains(SearchInput) || u.Id.Equals(SearchInput));
+
+            // return subset of users with the above filters
+            return View(users);
+        }
+
         public IActionResult UserInfo()
         {
             // obtain reference to currently logged in user by Id
@@ -89,14 +103,14 @@ namespace ScoreStore.Controllers
                 // obtain list of all users in database
                 var users = _userManager.Users;
 
-                // filter list of users matching search input phrase
-                users = users.Where(u => u.Name.Contains(SearchInput) || u.NormalizedEmail.Contains(SearchInput));
+                // filter list of users matching search input phrase in their profile names
+                users = users.Where(u => u.Name.Contains(SearchInput));
 
                 // filter list of users not already in current user's friend list
                 if (currentUser.FriendList != null)
                     users = users.Where(u => !currentUser.FriendList.Contains(u.Id));
 
-                // filter list of users no not include current user
+                // filter list of users to not include current user
                 users = users.Where(u => !currentUser.Id.Equals(u.Id));
 
                 // return subset of users with the above filters
