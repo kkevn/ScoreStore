@@ -69,8 +69,15 @@ namespace ScoreStore.Controllers
         public IActionResult UserInfo(String? id)
         {
             // obtain the user with Id and pass to the view
-            ApplicationUser currentUser = _userManager.FindByIdAsync(id).Result;
-            return View(currentUser);
+            if (!String.IsNullOrWhiteSpace(id))
+            {
+                ApplicationUser currentUser = _userManager.FindByIdAsync(id).Result;
+                return View(currentUser);
+            }
+            else
+            {
+                return View("UserIndexAdmin", _userManager.Users);    // should never reach here, return to list
+            }
         }
 
         /**** FriendList Functions ****/
