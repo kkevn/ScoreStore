@@ -107,8 +107,8 @@ namespace ScoreStore.Controllers
                 if (currentUser.FriendList != null)
                     users = users.Where(u => !currentUser.FriendList.Contains(u.Id));
 
-                // filter list of users to not include current user
-                users = users.Where(u => !currentUser.Id.Equals(u.Id));
+                // filter list of users to not include current user nor admin
+                users = users.Where(u => !currentUser.Id.Equals(u.Id) && !u.Name.Equals("admin"));
 
                 // return subset of users with the above filters
                 return View(users);
