@@ -522,10 +522,10 @@ namespace ScoreStore.Controllers
                 ViewBag.Title = game.Title;
                 ViewBag.ImageURL = game.ImageURL;
 
-                // obtain top 5 score win entries for current user and friends for this game
+                // obtain ~~top 5~~ score win entries for current user and friends for this game
                 var score_cols = scores.Where(s => s.GameId == gameIdVal);
                 score_cols = score_cols.Where(s => currentUser.FriendList.Contains(s.UserId) || userId.Equals(s.UserId));
-                score_cols = score_cols.OrderByDescending(s => s.Wins).Take(5);
+                //score_cols = score_cols.OrderByDescending(s => s.Wins).Take(5);
 
                 // get selection of users and their respective win counts
                 var columns = score_cols.Select(s => new { s.UserId, s.Wins });
