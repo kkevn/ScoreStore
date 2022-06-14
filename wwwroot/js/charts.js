@@ -81,9 +81,6 @@ function drawDonutChart() {
         // start the animation loop
         var handler = setInterval(function () {
 
-            // increment the current percentage value this iteration
-            currentPercentage++;
-
             // update pie chart values for current frame
             data.setValue(0, 1, currentPercentage);
             data.setValue(1, 1, 100 - currentPercentage);
@@ -91,8 +88,8 @@ function drawDonutChart() {
             // redraw the pie chart with these values
             chart.draw(data, options);
 
-            // stop if the ratio value has been reached
-            if (currentPercentage >= ratio)
+            // stop if the ratio value has been reached and post increment the current percentage counter this iteration
+            if (currentPercentage++ >= ratio)
                 clearInterval(handler);
         }, speed);
     }
