@@ -555,16 +555,21 @@ namespace ScoreStore.Controllers
             // obtain reference to currently logged in user by Id
             var userId = _userManager.GetUserId(HttpContext.User);
 
-            // parse obtained game Id into integer
-            int gameIdVal = Int32.Parse(Id.ToString());
-
             // redirect user to log in if not already signed in
             if (userId == null)
             {
                 return RedirectToPage("/Account/Login", new { area = "Identity" });
             }
+            // redirect user to account management to add profile name first
+            else if (String.IsNullOrEmpty(_userManager.FindByIdAsync(userId).Result.Name))
+            {
+                return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
+            }
             else
             {
+                // parse obtained game Id into integer
+                int gameIdVal = Int32.Parse(Id.ToString());
+
                 // store game Id, title and cover art URL of current game in a viewbag
                 var game = _context.Game.Where(g => g.Id == gameIdVal).FirstOrDefault();
                 ViewBag.GameId = game.Id;
