@@ -7,6 +7,10 @@
 
 <h4>@ViewData["Title"]</h4>
 <partial name="_StatusMessage" model="Model.StatusMessage" />
+<p id="p_missing_profile" class="text-info">
+    You do not have a profile name for this site. Add a unique profile name to
+    your account in order to begin using <i>ScoreStore</i>.
+</p>
 <div class="row">
     <div class="col-md-6">
         <form id="profile-form" method="post">
@@ -41,6 +45,9 @@
 
 <script type="text/javascript">
 
+    // obtain reference to missing profile name message
+    var p_missing_profile = document.getElementById("p_missing_profile");
+
     // obtain reference to save button
     var button_update = document.getElementById("update-profile-button");
 
@@ -48,10 +55,11 @@
     var input_profile = document.getElementById("input_profile");
     var profile = input_profile.value;
 
-    // disable update button and username input if one has been already registered
+    // disable update button, message, and username input if one has been already registered
     if (profile) {
         button_update.disabled = true;
         input_profile.disabled = true;
+        p_missing_profile.hidden = true;
     }
 
     // obtain references to the avatar input and image
