@@ -13,5 +13,10 @@ namespace ScoreStore.Models
         public string GameList { get; set; }
         public string FriendList { get; set; }
         public string StreakList { get; set; }
+
+        public ApplicationUser()
+        {
+            Avatar = "icon-0.png";
+        }
     }
 }
