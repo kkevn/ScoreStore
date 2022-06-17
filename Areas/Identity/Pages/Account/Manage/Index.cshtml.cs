@@ -39,6 +39,7 @@ namespace ScoreStore.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
+            [ProfileAvailable]
             [RegularExpression(@"^[\w\d_-]+$", ErrorMessage = "The {0} can only include letters, digits, dashes and underscores.")]
             [StringLength(32, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
             [Display(Name = "Profile Name")]
