@@ -12,13 +12,14 @@
         <form id="profile-form" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" disabled />
+                <label asp-for="Input.Profile"></label>
+                <input asp-for="Input.Profile" class="form-control" id="input_profile" />
+                <span asp-validation-for="Input.Profile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Avatar"></label>
                 <br>
-                <input asp-for="Avatar" name="Avatar" id="icon_user" class="input-hidden" disabled/>
+                <input asp-for="Avatar" name="Avatar" id="icon_user" class="input-hidden" disabled />
                 <label for="icon_user">
                     <img id="icon_user_img" class="avatar-selection" src="~/img/user-icon.png" />
                 </label>
@@ -28,8 +29,8 @@
                 <label asp-for="Input.PhoneNumber"></label>
                 <input asp-for="Input.PhoneNumber" class="form-control" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>-->
+            </div>-->
+            <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
 </div>
@@ -40,10 +41,23 @@
 
 <script type="text/javascript">
 
-        // obtain references to the avatar input and image
-        var input = document.getElementById("icon_user");
-        var image = document.getElementById("icon_user_img");
+    // obtain reference to save button
+    var button_update = document.getElementById("update-profile-button");
 
-        // set the avatar image to the input's value
-        image.src = "/img/user-icons/" + input.value;
+    // obtain references to the username input
+    var input_profile = document.getElementById("input_profile");
+    var profile = input_profile.value;
+
+    // disable update button and username input if one has been already registered
+    if (profile) {
+        button_update.disabled = true;
+        input_profile.disabled = true;
+    }
+
+    // obtain references to the avatar input and image
+    var input_image = document.getElementById("icon_user");
+    var image = document.getElementById("icon_user_img");
+
+    // set the avatar image to the input's value
+    image.src = "/img/user-icons/" + input_image.value;
 </script>

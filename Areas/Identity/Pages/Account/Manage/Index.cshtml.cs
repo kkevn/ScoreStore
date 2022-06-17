@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ScoreStore.Models;
+using ScoreStore.Validators;
 
 namespace ScoreStore.Areas.Identity.Pages.Account.Manage
 {
@@ -23,8 +24,6 @@ namespace ScoreStore.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        public string Username { get; set; }
-
         [Display(Name = "Avatar Icon")]
         public string Avatar { get; set; }
 
@@ -39,6 +38,11 @@ namespace ScoreStore.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [RegularExpression(@"^[\w\d_-]+$", ErrorMessage = "The {0} can only include letters, digits, dashes and underscores.")]
+            [StringLength(32, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
+            [Display(Name = "Profile Name")]
+            public string Profile { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -48,12 +52,12 @@ namespace ScoreStore.Areas.Identity.Pages.Account.Manage
             var userAvatar = user.Avatar;
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
-            Username = userName;
             Avatar = userAvatar;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Profile = userName
             };
         }
 
@@ -81,6 +85,14 @@ namespace ScoreStore.Areas.Identity.Pages.Account.Manage
             {
                 await LoadAsync(user);
                 return Page();
+            }
+
+            user.Name = Input.Profile;
+            var setProfileResult = await _userManager.UpdateAsync(user);
+            if (!setProfileResult.Succeeded)
+            {
+                StatusMessage = "Unexpected error when trying to set profile name.";
+                return RedirectToPage();
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
