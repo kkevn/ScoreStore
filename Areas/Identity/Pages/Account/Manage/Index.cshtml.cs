@@ -89,7 +89,12 @@ namespace ScoreStore.Areas.Identity.Pages.Account.Manage
             }
 
             user.Name = Input.Profile;
-            var setProfileResult = await _userManager.UpdateAsync(user);
+
+            // add claim to user based on whether they are the admin or not
+            var claim = Input.Profile.Equals("admin") ? "admin" : "user";
+            var setProfileResult = await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", claim));
+
+            setProfileResult = await _userManager.UpdateAsync(user);
             if (!setProfileResult.Succeeded)
             {
                 StatusMessage = "Unexpected error when trying to set profile name.";
