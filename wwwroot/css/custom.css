@@ -37,6 +37,11 @@ body {
   border-color: #004a1a;
 }
 
+.btn.btn-primary:disabled {
+    background-color: #235137;
+    border-color: #004a1a;
+}
+
 /* override bootstrap nav-pill active color */
 
 .nav-pills .nav-link.active {
