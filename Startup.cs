@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ScoreStore.Data;
 using ScoreStore.Models;
+using ScoreStore.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +52,14 @@ namespace ScoreStore
                     options.ClientId = googleAuthNSection["ClientId"];
                     options.ClientSecret = googleAuthNSection["ClientSecret"];
                 });
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(options =>
+            {
+                options.ApiKey = Configuration["SendGrid:ApiKey"];
+                options.SenderEmail = Configuration["SendGrid:SenderEmail"];
+                options.SenderName = Configuration["SendGrid:SenderName"];
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
