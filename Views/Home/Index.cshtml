@@ -2,6 +2,17 @@
     ViewData["Title"] = "Home Page";
 }
 
+<!--dismissable free service warning -->
+<div class="alert alert-warning alert-dismissible alert-" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <i>ScoreStore</i> is hosted on free web and database services. Please do not abuse the limits of these free services by:
+    <ul>
+        <li>limiting yourself to one account</li>
+        <li>ending your session as quickly as possible to avoid taking up limited CPU time from others</li>
+        <li>tracking the scores of just a handful of games to save on the database quota</li>
+    </ul>
+</div>
+
 <!--based on bootstrap jumbotron example -->
 <div class="jumbotron text-dark jumbotron-main">
     <div class="container">
@@ -11,11 +22,11 @@
         {
             <p><a class="btn btn-primary btn-lg" role="button" asp-area="Identity" asp-page="/Account/Register">Get started &raquo;</a></p>
         }
-        </div>
+    </div>
 </div>
 
 <div class="container">
-    
+
     <div class="row">
         <div class="col-md-4 text-light bg-dark jumbotron-sub">
             <h2>Submit Scores</h2>
