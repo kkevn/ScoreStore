@@ -1,0 +1,50 @@
+name: User Encountered Error
+description: Report an issue
+title: "[Issue]: "
+labels: ["bug", "issue report"]
+assignees:
+  - kkevn
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for filling out this issue report, please provide any information relating to the error.
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
+  - type: input
+    id: profile
+    attributes:
+      label: Profile Name
+      description: Include your unique profile name if you were logged in.
+    validations:
+      required: false
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What error occurred?
+      description: Please include a summary of the issue, steps to reproduce it, the actual result, and your expected result.
+      placeholder: Remember to follow the `Reporting an Issue` guidelines found on the ScoreStore website.
+    validations:
+      required: true
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: What browsers are you seeing the problem on?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
