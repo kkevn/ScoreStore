@@ -49,6 +49,12 @@ body {
 }
 
 /* set custom classes */
+img.logo {
+    width: 32px;
+    height: 32px;
+    margin-right: 4px;
+}
+
 a.sidebar-item {
     margin-bottom: 1px;
     background-color: var(--color-accent-light);

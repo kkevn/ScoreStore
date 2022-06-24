@@ -28,7 +28,9 @@
             <!-- Sidebar-->
             <div class="bg-dark" id="sidebar-wrapper">
                 <a style="text-decoration: none;" asp-area="" asp-controller="Home" asp-action="Index">
-                    <div class="sidebar-heading border-bottom text-light bg-dark">ScoreStore</div>
+                    <div class="sidebar-heading border-bottom text-light bg-dark">
+                        <img src="~/img/scorestore_logo.png" class="logo" />ScoreStore
+                    </div>
                 </a>
                 <div class="list-group list-group-flush">
                     <a id="list_stats" class="sidebar-item list-group-item list-group-item-action list-group-item-dark p-3" asp-area="" asp-controller="Home" asp-action="ViewStats"><i class="fa-solid fa-chart-column"></i> Overall Stats</a>
@@ -51,7 +53,9 @@
                     @if (!User.Identity.IsAuthenticated)
                     {
                         <a style="text-decoration: none;" asp-area="" asp-controller="Home" asp-action="Index">
-                            <div class="sidebar-heading text-light bg-dark">ScoreStore</div>
+                            <div class="sidebar-heading text-light bg-dark">
+                                <img src="~/img/scorestore_logo.png" class="logo" />ScoreStore
+                            </div>
                         </a>
                     }
                     <button class="btn btn-primary" id="sidebarToggle" style="display: none;">Toggle Menu</button>
