@@ -5,6 +5,10 @@
     <UserSecretsId>aspnet-ScoreStore-690ECB73-4824-42D5-8F66-566F0FAE163B</UserSecretsId>
   </PropertyGroup>
 
+  <Target Name="PrePublishTarget" AfterTargets="Publish">
+    <Exec Command="dotnet ef database update" />
+  </Target>
+
   <ItemGroup>
     <Compile Remove="Data\Migrations\20210531043346_initialsetup.cs" />
     <Compile Remove="Data\Migrations\20210531043346_initialsetup.Designer.cs" />
@@ -20,6 +24,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.26" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="3.1.26" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.14" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.25" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.25" />
@@ -29,6 +34,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.18" />
     <PackageReference Include="SendGrid" Version="9.28.0" />
   </ItemGroup>
 
