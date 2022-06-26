@@ -1,4 +1,4 @@
-﻿@model List<(int Id, string ImageURL, string Title, double Ratio, int Matches)>
+﻿@model List<(int Id, string ImageURL, string Title, /*double Ratio,*/ int Matches, int Wins, int Losses)>
 
 <p style="margin-top:18px;margin-left:18px;">
     <a class="btn btn-primary btn-sm" role="button" asp-controller="Games" asp-action="Index">
@@ -26,7 +26,8 @@
             </div>
             <div class="row text-center" style="margin-top:16px;">
                 <div class="col-sm-3 list-item-detail">
-                    @Html.DisplayFor(modelItem => item.Ratio)% winrate
+                    @*@Html.DisplayFor(modelItem => item.Ratio)% winrate*@
+                    @((item.Wins + item.Losses > 0) ? Math.Round((double)item.Wins / (item.Wins + item.Losses) * 100, 2) : 0.0)% winrate
                 </div>
                 <div class="col-sm-2">|</div>
                 @if (item.Matches == 1)

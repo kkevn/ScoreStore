@@ -145,7 +145,7 @@ namespace ScoreStore.Controllers
          * Helper function that returns the current user's friends with their overall scores in the form of a value tuple. Uses the 
          * current user's friend list (in both string and model form) to generate the list of users necessary to output.
          */
-        private List<(string, string, string, string, double, int, int)> FriendListHelper(string friendList, IQueryable<ApplicationUser> friends)
+        private List<(string, string, string, string, /*double, int*/ int, int, int)> FriendListHelper(string friendList, IQueryable<ApplicationUser> friends)
         {
             // trim user's friends to a selection of just Id, profile name, avatar, and email
             var friends_trimmed = friends.Select(f => new { f.Id, f.Name, f.Avatar, f.NormalizedEmail });
@@ -176,10 +176,10 @@ namespace ScoreStore.Controllers
                     Name = sf.Name,
                     Avatar = sf.Avatar,
                     NormalizedEmail = sf.NormalizedEmail,
-                    Ratio = (sg.Wins + sg.Losses > 0) ? Math.Round((double) sg.Wins / (sg.Wins + sg.Losses) * 100, 2) : 0.0,
-                    Matches = sg.Wins + sg.Losses,
-                    //Wins = sg.Wins,
-                    //Losses = sg.Losses,
+                    //Ratio = (sg.Wins + sg.Losses > 0) ? Math.Round((double) sg.Wins / (sg.Wins + sg.Losses) * 100, 2) : 0.0,
+                    //Matches = sg.Wins + sg.Losses,
+                    Wins = sg.Wins,
+                    Losses = sg.Losses,
                     Games = sg.Games
                 });
 
@@ -199,13 +199,15 @@ namespace ScoreStore.Controllers
                         Name = x.FT.Name,
                         Avatar = x.FT.Avatar,
                         NormalizedEmail = x.FT.NormalizedEmail,
-                        Ratio = y.Ratio,
-                        Matches = y.Matches,
+                        //Ratio = y.Ratio,
+                        //Matches = y.Matches,
+                        Wins = y.Wins,
+                        Losses = y.Losses,
                         Games = y.Games
                     });
 
             // return list of value tuples containing current user's friends and their scores
-            return friends_all.AsEnumerable().Select(f => new ValueTuple<string, string, string, string, double, int, int>(f.Id, f.Name, f.Avatar, f.NormalizedEmail, f.Ratio, f.Matches, f.Games)).ToList();
+            return friends_all.AsEnumerable().Select(f => new ValueTuple<string, string, string, string, /*double, int,*/ int, int, int>(f.Id, f.Name, f.Avatar, f.NormalizedEmail, /*f.Ratio, f.Matches,*/ f.Wins, f.Losses, f.Games)).ToList();
         }
 
         public async Task<IActionResult> AddFriend()
@@ -360,7 +362,7 @@ namespace ScoreStore.Controllers
          * Helper function that returns the current user's games with their overall scores in the form of a value tuple. Uses the 
          * current user's Id and game list IQueryable to generate the list of games necessary to output.
          */
-        private List<(int, string, string, double, int)> GameListHelper(string userId, IQueryable<Game> games)
+        private List<(int, string, string, /*double,*/ int, int, int)> GameListHelper(string userId, IQueryable<Game> games)
         {
             // obtain all scores in database
             var scores = _context.Scores;
@@ -377,14 +379,14 @@ namespace ScoreStore.Controllers
                     Id = g.Id,
                     ImageURL = g.ImageURL,
                     Title = g.Title,
-                    Ratio = (su.Wins + su.Losses > 0) ? Math.Round((double)su.Wins / (su.Wins + su.Losses) * 100, 2) : 0.0,
+                    //Ratio = (su.Wins + su.Losses > 0) ? Math.Round((double)su.Wins / (su.Wins + su.Losses) * 100, 2) : 0.0,
                     Matches = su.Wins + su.Losses,
-                    //Wins = sg.Wins,
-                    //Losses = sg.Losses
+                    Wins = su.Wins,
+                    Losses = su.Losses
                 });
 
             // return list of value tuples containing current user's games and their scores
-            return games_calculated.AsEnumerable().Select(g => new ValueTuple<int, string, string, double, int>(g.Id, g.ImageURL, g.Title, g.Ratio, g.Matches)).ToList();
+            return games_calculated.AsEnumerable().Select(g => new ValueTuple<int, string, string, /*double,*/ int, int, int>(g.Id, g.ImageURL, g.Title, /*g.Ratio,*/ g.Matches, g.Wins, g.Losses)).ToList();
         }
 
         public async Task<IActionResult> AddGame()

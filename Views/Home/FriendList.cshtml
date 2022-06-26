@@ -1,4 +1,4 @@
-﻿@model List<(string Id, string Name, string Avatar, string NormalizedEmail, double Ratio, int Matches, int Games)>
+﻿@model List<(string Id, string Name, string Avatar, string NormalizedEmail, /*double Ratio, int Matches,*/ int Wins, int Losses, int Games)>
 
 <p style="margin-top:18px;margin-left:18px;">
     <a class="btn btn-primary btn-sm" role="button" asp-action="SearchUsersResults">
@@ -26,19 +26,22 @@
             </div>
             <div class="row text-center" style="margin-top:16px;">
                 <div class="col-sm-2 list-item-detail">
-                    @Html.DisplayFor(modelItem => item.Ratio)% winrate
+                    @*@Html.DisplayFor(modelItem => item.Ratio)% winrate*@
+                    @((item.Wins + item.Losses > 0) ? Math.Round((double)item.Wins / (item.Wins + item.Losses) * 100, 2) : 0.0)% winrate
                 </div>
                 <div class="col-sm-1">|</div>
-                @if (item.Matches == 1)
+                @if (item.Wins + item.Losses == 1)
                 {
                     <div class="col-sm-2 list-item-detail">
-                        @Html.DisplayFor(modelItem => item.Matches) match
+                        @*@Html.DisplayFor(modelItem => item.Matches) match*@
+                        1 match
                     </div>
                 }
                 else
                 {
                     <div class="col-sm-2 list-item-detail">
-                        @Html.DisplayFor(modelItem => item.Matches) matches
+                        @*@Html.DisplayFor(modelItem => item.Matches) matches*@
+                        @(item.Wins + item.Losses) matches
                     </div>
                 }
                 <div class="col-sm-1">|</div>
