@@ -103,7 +103,7 @@ namespace ScoreStore.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "AdminOnly")]
-        public async Task<IActionResult> UserEdit(string id, [Bind("Id,Name,Avatar,StreakList")] ApplicationUser user)
+        public async Task<IActionResult> UserEdit(string id, [Bind("Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnablde,AccessFailedCount,FriendList,GameList,Name,StreakList,Avatar")] ApplicationUser user)
         {
             var existItem = await _context.Set<ApplicationUser>().FindAsync(user.Id);
             if (existItem == null)
