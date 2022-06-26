@@ -1,11 +1,12 @@
 ﻿@model List<(string Id, string Name, string Avatar, string NormalizedEmail, /*double Ratio, int Matches,*/ int Wins, int Losses, int Games)>
 
-<p style="margin-top:18px;margin-left:18px;">
-    <a class="btn btn-primary btn-sm" role="button" asp-action="SearchUsersResults">
+<div style="margin-top:18px;margin-left:18px;">
+    <a class="btn btn-primary btn-sm games-header" role="button" asp-action="SearchUsersResults">
         Add Friend
         <i class="fa-solid fa-plus icon-add"></i>
     </a>
-</p>
+    <h4 class="games-header" style="margin-left:18px;">My Friends</h4>
+</div>
 
 <hr>
 

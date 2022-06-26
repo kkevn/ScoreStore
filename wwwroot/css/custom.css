@@ -55,6 +55,10 @@ img.logo {
     margin-right: 4px;
 }
 
+.games-header {
+    display: inline-block;
+}
+
 a.sidebar-item {
     margin-bottom: 1px;
     background-color: var(--color-accent-light);

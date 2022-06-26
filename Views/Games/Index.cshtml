@@ -6,12 +6,13 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <p style="margin-top:18px;margin-left:18px;">
-        <a class="btn btn-primary btn-sm" role="button" asp-action="Create">
+    <div style="margin-top:18px;margin-left:18px;">
+        <a class="btn btn-primary btn-sm games-header" role="button" asp-action="Create">
             New Game
             <i class="fa-solid fa-pen icon-add"></i>
         </a>
-    </p>
+        <h4 class="games-header" style="margin-left:18px;">Submitted Games</h4>
+    </div>
 }
 
 <hr>
