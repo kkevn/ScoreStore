@@ -34,7 +34,8 @@ namespace ScoreStore
         public void ConfigureServices(IServiceCollection services)
         {
             // Postgres connection
-            var databaseUrl = Configuration.GetValue<string>("PostgresDatabaseURL");
+            //var databaseUrl = Configuration.GetValue<string>("PostgresDatabaseURL");
+            var databaseUrl = Environment.GetEnvironmentVariable("PostgresDatabaseURL");
             var databaseUri = new Uri(databaseUrl);
             var userInfo = databaseUri.UserInfo.Split(':');
 
@@ -73,20 +74,31 @@ namespace ScoreStore
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {
+                    /*
                     IConfigurationSection googleAuthNSection =
                         Configuration.GetSection("Authentication:Google");
 
                     options.ClientId = googleAuthNSection["ClientId"];
                     options.ClientSecret = googleAuthNSection["ClientSecret"];
+                    */
+
+                    options.ClientId = Environment.GetEnvironmentVariable("GoogleClientId");
+                    options.ClientSecret = Environment.GetEnvironmentVariable("GoogleClientSecret");
                 });
 
             // configure email sender
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(options =>
             {
+                /*
                 options.ApiKey = Configuration["SendGrid:ApiKey"];
                 options.SenderEmail = Configuration["SendGrid:SenderEmail"];
                 options.SenderName = Configuration["SendGrid:SenderName"];
+                */
+
+                options.ApiKey = Environment.GetEnvironmentVariable("SendGridApiKey");
+                options.SenderEmail = Environment.GetEnvironmentVariable("SendGridSenderEmail");
+                options.SenderName = Environment.GetEnvironmentVariable("SendGridSenderName");
             });
         }
 
