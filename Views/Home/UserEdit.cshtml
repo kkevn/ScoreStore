@@ -1,0 +1,60 @@
+﻿@model ScoreStore.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>ApplicationUser</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UserEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserName" />
+            <input type="hidden" asp-for="NormalizedUserName" />
+            <input type="hidden" asp-for="Email" />
+            <input type="hidden" asp-for="NormalizedEmail" />
+            <input type="hidden" asp-for="EmailConfirmed" />
+            <input type="hidden" asp-for="PasswordHash" />
+            <input type="hidden" asp-for="SecurityStamp" />
+            <input type="hidden" asp-for="ConcurrencyStamp" />
+            <input type="hidden" asp-for="PhoneNumber" />
+            <input type="hidden" asp-for="PhoneNumberConfirmed" />
+            <input type="hidden" asp-for="TwoFactorEnabled" />
+            <input type="hidden" asp-for="LockoutEnd" />
+            <input type="hidden" asp-for="LockoutEnabled" />
+            <input type="hidden" asp-for="AccessFailedCount" />
+            <input type="hidden" asp-for="FriendList" />
+            <input type="hidden" asp-for="GameList" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Avatar" class="control-label"></label>
+                <input asp-for="Avatar" class="form-control" />
+                <span asp-validation-for="Avatar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StreakList" class="control-label"></label>
+                <input asp-for="StreakList" class="form-control" />
+                <span asp-validation-for="StreakList" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="IndexAdmin">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

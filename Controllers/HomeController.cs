@@ -80,6 +80,49 @@ namespace ScoreStore.Controllers
             }
         }
 
+        // GET: ApplicationUser/Edit/5
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> UserEdit(string? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        // POST: ApplicationUser/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> UserEdit(string id, [Bind("Id,Name,Avatar,StreakList")] ApplicationUser user)
+        {
+            var existItem = await _context.Set<ApplicationUser>().FindAsync(user.Id);
+            if (existItem == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                _context.Entry(existItem).CurrentValues.SetValues(user);
+                var result = await _context.SaveChangesAsync();
+            }
+            return View("UserInfo", user);
+        }
+
+        private bool UserExists(string id)
+        {
+            return _context.Users.Any(e => e.Id == id);
+        }
+
         /**** FriendList Functions ****/
 
         public IActionResult SearchUsersResults(String SearchInput)
