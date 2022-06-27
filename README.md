@@ -1,9 +1,7 @@
-:construction: **This project is still in early development stages.** :construction:
-
 # ScoreStore
- ASP.NET web application using MVC to track and store wins/losses for any kind of game.
+ ASP.NET web application using MVC to track and visualize wins/losses for any kind of game.
  
-This project is my way of refamiliarizing myself with ASP.NET after using it only a few times in university. ScoreStore aims to allow a user to input any game(s) at all of their own choosing into a database. These games are intended to be anything that is played against a few other people such as a video game, card game, or even a sports match.
+This project is my way of refamiliarizing myself with ASP.NET after using it only a few times in university. ScoreStore aims to allow a user to input any game(s) at all of their own choosing into a global database. These games are intended to be anything that is played against a few other people such as a video game, card game, or even a sports match.
 
 Once a game is added, the user will then need to manually update their game history as each match occurs. For example, if a user just played a game of basketball against a friend or two, the user will simply add a win or loss to their account for the basketball game they've alredy added. Then, ScoreStore will automatically update the user's win/loss ratio and other useful calcuations to the user in the form of graphs and charts so that he/she better understands their performance.
 
@@ -11,24 +9,28 @@ Once a game is added, the user will then need to manually update their game hist
 
 ### Demonstration
 
-`// posted upon completion of major features`
+`// video demo posted soon`
+
+Want to try it out? Register an account and see the live demo hosted on Heroku: [https://scorestore.herokuapp.com](https://scorestore.herokuapp.com)
 
 ---
 
 ### Features
 
-Please see the [issue tracker](https://github.com/kkevn/ScoreStore/issues) for a more detailed list of planned features and their status.
-
-* Add any game(s) you'd like to the database
-* Update your account's game wins as they occur
+* Log in via a local account or social login
+* Add any games you'd like to the global database
+* Update your account's game wins/losses as they occur
 * Graphically view your stats such as:
   * win/loss ratio
   * play count per game
   * total wins per game
-  * recent win/loss history
-* Compare stats with added friends
+  * complete win/loss history
+  * win/loss streaks
+* Add other users as friends
+  * view their overall performance across their games
+  * compare your stats against theirs for games you share
 
-:warning: *This project is in early stages and a work in progress; as a result features may be subject to change* :warning:
+*See the [issue tracker](https://github.com/kkevn/ScoreStore/issues) for a list of planned (or completed) features and their status.*
 
 ---
 
@@ -36,9 +38,17 @@ Please see the [issue tracker](https://github.com/kkevn/ScoreStore/issues) for a
 
 * **C#** for program and controller logic
 * **HTML/CSS** for view layouts
+* **[Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/)** for additional CSS support
 * **JavaScript** for webpage logic
 * **ASP.NET** for applicaiton development and MVC design
 * **[Google Charts](https://developers.google.com/chart)** for rendering charts
+* **[Google Sign-In](https://developers.google.com/identity/sign-in/web/sign-in)** for social login
+* **[SendGrid](https://sendgrid.com/)** for mail server
+
+#### Live Environment
+* **[Heroku](https://www.heroku.com/)** for free hobby-tier app and database hosting
+* **PostgreSQL** integration for database (default MS SQL not supported by Heroku)
+* **[jincod/dotnetcore-buildpack](https://github.com/jincod/dotnetcore-buildpack/releases/tag/v3.1.11)** for dotnet deployment
 
 ---
 
