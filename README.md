@@ -9,7 +9,9 @@ Once a game is added, the user will then need to manually update their game hist
 
 ### Demonstration
 
-`// video demo posted soon`
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=HoI-ORoXd3Q
+" target="_blank"><img src="http://img.youtube.com/vi/HoI-ORoXd3Q/0.jpg" 
+alt="ScoreStore Demo" width="640" height="360" border="10" /></a>
 
 Want to try it out? Register an account and see the live demo hosted on Heroku: [https://scorestore.herokuapp.com](https://scorestore.herokuapp.com)
 
