@@ -13,7 +13,11 @@ Once a game is added, the user will then need to manually update their game hist
 " target="_blank"><img src="http://img.youtube.com/vi/HoI-ORoXd3Q/0.jpg" 
 alt="ScoreStore Demo" width="640" height="360" border="10" /></a>
 
-Want to try it out? Register an account and see the live demo hosted on Heroku: [https://scorestore.herokuapp.com](https://scorestore.herokuapp.com)
+Want to try it out? Register an account and see the live demo hosted on ~~Heroku~~ Railway: [https://scorestore.up.railway.app/](https://scorestore.up.railway.app/)
+
+#### :exclamation: Live Demo Update :exclamation:
+
+*As of 08/25/2022, [Heroku announced an end to all of its free hosting services](https://blog.heroku.com/next-chapter) that ScoreStore was originally using. As a result, I have migrated the live environment to Railway. Please note, Railway's free service has a monthly limit of 500 hours, and so the live environment may be unavailable at times.*
 
 ---
 
@@ -48,9 +52,10 @@ Want to try it out? Register an account and see the live demo hosted on Heroku: 
 * **[SendGrid](https://sendgrid.com/)** for mail server
 
 #### Live Environment
-* **[Heroku](https://www.heroku.com/)** for free hobby-tier app and database hosting
-* **PostgreSQL** integration for database (default MS SQL not supported by Heroku)
-* **[jincod/dotnetcore-buildpack](https://github.com/jincod/dotnetcore-buildpack/releases/tag/v3.1.11)** for dotnet deployment
+* ~~**[Heroku](https://www.heroku.com/)** for free hobby-tier app and database hosting~~
+* **[Railway](https://railway.app/)** for free starter-tier app and database hosting
+* **PostgreSQL** integration for database (default MS SQL not supported by Heroku or Railway)
+* ~~**[jincod/dotnetcore-buildpack](https://github.com/jincod/dotnetcore-buildpack/releases/tag/v3.1.11)** for dotnet deployment in Heroku~~
 
 ---
 
