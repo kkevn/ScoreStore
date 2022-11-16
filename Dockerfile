@@ -3,6 +3,15 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /build
 COPY . .
 
+# allow Railway to inject environment variables
+ARG ASPNETCORE_ENVIRONMENT
+ARG GoogleClientId
+ARG GoogleClientSecret
+ARG PostgresDatabaseURL
+ARG SendGridApiKey
+ARG SendGridSenderEmail
+ARG SendGridSenderName
+
 # create the build
 RUN dotnet restore
 # RUN dotnet new tool-manifest
