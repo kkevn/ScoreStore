@@ -6,7 +6,7 @@ COPY . .
 # create the build
 RUN dotnet restore
 # RUN dotnet new tool-manifest
-RUN dotnet tool install dotnet-ef
+RUN dotnet tool install dotnet-ef --version 3.1.0
 RUN dotnet publish -o /app
 
 # run the build
