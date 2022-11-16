@@ -4,9 +4,9 @@ WORKDIR /build
 COPY . .
 
 # create the build
+RUN dotnet restore
 RUN dotnet new tool-manifest
 RUN dotnet tool install dotnet-ef
-RUN dotnet restore
 RUN dotnet publish -o /app
 
 # run the build
