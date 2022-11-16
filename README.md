@@ -56,6 +56,7 @@ Want to try it out? Register an account and see the live demo hosted on ~~Heroku
 * **[Railway](https://railway.app/)** for free starter-tier app and database hosting
 * **PostgreSQL** integration for database (default MS SQL not supported by Heroku or Railway)
 * ~~**[jincod/dotnetcore-buildpack](https://github.com/jincod/dotnetcore-buildpack/releases/tag/v3.1.11)** for dotnet deployment in Heroku~~
+* **[Docker](https://www.docker.com/)** dockerfile for dotnet deployment in Railway
 
 ---
 
