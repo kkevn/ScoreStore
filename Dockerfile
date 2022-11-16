@@ -5,7 +5,7 @@ COPY . .
 
 # create the build
 RUN dotnet restore
-RUN dotnet publish -c Release -o /app
+RUN dotnet publish -o /app
 
 # run the build
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS final
